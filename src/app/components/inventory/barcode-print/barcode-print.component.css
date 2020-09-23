@@ -1,0 +1,60 @@
+.rxp-warehousing-container{
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+.ogt-printing-setting{
+    font-weight: lighter;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+.ogt-printing-setting-input{
+    width: 165px;
+    color: #656565;
+}
+.ogt-printing-setting-label{
+    font-weight: lighter;
+    margin-right: 10px;
+    margin-left: 22px;
+}
+.rxp-warehousing-btt{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 18px;
+    padding-left: 18px;
+}
+.rxp-warehousing-btt-txt{
+    font-size: 17px;
+}
+.rxp-warehousing-btt i{
+    font-size: 26px;
+    margin-right: 11px;
+    top: 3px;
+    height: 32px;
+    position: relative;
+}
+
+.mat-column-ProductSelect{
+    padding-top: 16px;
+    padding-bottom: 10px;
+}
+.mat-header-cell .mat-column-ProductSelect{
+    padding-top: 19px;
+}
+.rxp-column-select-header {
+    padding-left: 12px !important;
+    padding-top: 20px !important;
+}
+.example-tree-invisible {
+    display: none;
+  }
+  
+  .in-table-container-header{
+    text-align: center;
+    top: 0px;
+    font-size: 16px;
+    margin-top: -14px;
+    color: #ccc;
+  }
+  .in-table-container-header i{
+    margin-right: 10px;
+  }

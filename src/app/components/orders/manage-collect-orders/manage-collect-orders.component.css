@@ -1,0 +1,16 @@
+.colorImage {
+    max-width: 200px;
+    max-height: 10vw;
+  }
+  table th {
+    font-weight: bold;
+    font-size: larger;
+  }
+  td.mat-cell,
+  td.mat-footer-cell,
+  th.mat-header-cell {
+    padding: 9px;
+  }
+  .contact{
+    cursor: pointer;
+  }

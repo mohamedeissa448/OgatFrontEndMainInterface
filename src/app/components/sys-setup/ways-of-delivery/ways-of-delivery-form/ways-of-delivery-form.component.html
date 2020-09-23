@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form [formGroup]="waysOfDeliveryService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Way Of Delivery Name*" formControlName="WayOfDeliverySchema_Name" />
+      <mat-error>Please enter a way of delivery Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Way Of Delivery Description"
+        formControlName="WayOfDeliverySchema_Description"
+      />
+      <mat-error>Please enter a  way of delivery description</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="WayOfDeliverySchema_IsActive"
+    >
+    Way Of Delivery Status</mat-slide-toggle
+    >
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="waysOfDeliveryService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

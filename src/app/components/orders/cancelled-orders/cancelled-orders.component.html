@@ -1,0 +1,163 @@
+<div class="row">
+  <div
+    flex="100"
+    flex-xs="100"
+    layout="row"
+    class="rxp-search-by-radio-selection"
+  >
+    Search By :
+    <mat-radio-group
+      class="mat-primary"
+      [(ngModel)] = "typeOfSearch"
+    >
+      <mat-radio-button value="Order_Code"> Order Code</mat-radio-button>
+      <mat-radio-button value="Customer_Name"> Customer_Name</mat-radio-button>
+      <mat-radio-button value="Mobile"> Customer_Mobile</mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+<div layout="row" class="rxp-margin-top-medium" layout-xs="column">
+  <div flex="75" flex-xs="100" layout="column">
+    <form >
+      <div
+        class="mat-block rxp-search-text-box-large rxp-no-margin"
+      >
+        <mat-form-field class="example-full-width">
+          <mat-label>Find Order</mat-label>
+          <input *ngIf="typeOfSearch != 'Customer_Name'" matInput [(ngModel)]="searchInput" name="searchInput">
+          <div *ngIf="typeOfSearch == 'Customer_Name'">
+            <mat-chip-list #chipList>
+              <mat-chip
+                *ngFor="let customer of customers"
+                [selectable]="selectable"
+                [removable]="removable"
+                (removed)="removeCustomer(customer)" >
+                {{customer}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              <input
+                placeholder="Select customer..."
+                #customerInput
+                [formControl]="customerCtrl"
+                [matAutocomplete]="autoCustomer"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addCustomer($event)"
+                >
+                
+            </mat-chip-list>
+            <mat-autocomplete #autoCustomer="matAutocomplete" (optionSelected)="selectedCustomer($event)"disabled>
+              <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
+                {{customer.Customer_Name}},Code:({{customer.Customer_Code}})
+              </mat-option>
+            </mat-autocomplete>
+        </div>
+        </mat-form-field>
+        <button type="button" (click)="search()" class="btn btn-success mr-1" title="search" >
+          <span class="material-icons">
+              search
+          </span>
+      </button>
+      </div>
+    </form>
+  </div>
+</div>
+    <div class="rxp-data-table-bg">
+      <table mat-table [dataSource]="cancelledOrders" class="mat-elevation-z8" matSort>
+        <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+        <ng-container matColumnDef="Code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.Order_Code }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Order Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.Order_Date | date}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Note">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.Order_Note }}
+          </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="Total Product Selling Amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Product Selling Amount</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.Order_TotalProductSellingAmount }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Customer Name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Name</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.Order_Customer.Customer_Name }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Customer Code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Code</th>
+          <td mat-cell *matCellDef="let element">
+              {{ element.Order_Customer.Customer_Code }}
+          </td>
+      </ng-container>
+
+        <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.Order_Status }}
+            </td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="Actions">
+          <th mat-header-cell *matHeaderCellDef>Tools</th>
+          <td mat-cell *matCellDef="let element"  class="rxp-grid-one-btts">
+            <button class="btn btn-default mr-1" 
+              (click)="ReCreateOrder(element)" title="ReCreateOrder" type="button"
+              >
+              <span class="sr-only">ReCreate Order</span>
+              <i class="icon-pencil"></i>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            Loading data...
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            No data.
+          </mat-footer-cell>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <mat-footer-row
+          *matFooterRowDef="['loading']"
+          [ngClass]="{ hide: cancelledOrders != null }"
+        ></mat-footer-row>
+        <mat-footer-row
+          *matFooterRowDef="['noData']"
+          [ngClass]="{
+            hide: !(cancelledOrders && cancelledOrders.data != null && cancelledOrders.data.length == 0)
+          }"
+        ></mat-footer-row>
+      </table>
+      <mat-card *ngIf="isLoading" class="rxp-ingrid-loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </mat-card>
+    </div>
+    <mat-paginator
+      [length]="100"
+      [pageSize]="20"
+      [pageSizeOptions]="[20, 25, 50, 100]"
+      showFirstLastButtons
+    >
+    </mat-paginator>

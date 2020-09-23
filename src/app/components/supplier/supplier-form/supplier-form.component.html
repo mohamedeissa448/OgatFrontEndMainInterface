@@ -1,0 +1,188 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+{{supplierService.form.value |json}}
+<form [formGroup]="supplierService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content  class="d-flex p-2">
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Supplier Name*" formControlName="Supplier_Name" />
+      <mat-error>Please enter a Supplier Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Email*"
+        formControlName="Supplier_Email"
+      />
+      <mat-error>Please enter a Supplier Email</mat-error>
+      <br>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Phone*"
+        formControlName="Supplier_Phone"
+      />
+      <mat-error>Please enter a Supplier Phone</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Website Url*"
+        formControlName="Supplier_WebsiteURL"
+      />
+      <mat-error>Please enter a Supplier Website Url</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="FaceBookPageURL*"
+        formControlName="Supplier_FaceBookPageURL"
+      />
+      <mat-error>Please enter a Supplier FaceBookPageURL</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field appearance="fill"class="form-field">
+      <mat-label>Country</mat-label>
+      <mat-select formControlName="Supplier_Country">
+        <mat-option *ngFor="let country of countries" [value]="country._id">
+          {{country.Country_Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="City*"
+        formControlName="Supplier_City"
+      />
+      <mat-error>Please enter a Supplier City</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Address*"
+        formControlName="Supplier_Address"
+      />
+      <mat-error>Please enter a Supplier Address</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Address GPS Location*"
+        formControlName="Supplier_AddressGPSLocation"
+      />
+      <mat-error>Please enter a Supplier Address GPS Location</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Store Address*"
+        formControlName="Supplier_StoreAddress"
+      />
+      <mat-error>Please enter a Supplier Store Address</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Store GPS Location*"
+        formControlName="Supplier_StoreGPSLocation"
+      />
+      <mat-error>Please enter a Supplier Store GPS Location</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Time Of Delivery*"
+        formControlName="Supplier_TimeOfDelivery"
+        type="number"
+      />
+      <mat-error>Please enter a Supplier Time Of Delivery</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+        <mat-form-field  class="form-field">
+          <mat-select multiple formControlName="Supplier_Categories" placeholder="Select categories">
+            <mat-option *ngFor="let supplierCategory of supplierCategories" [value]="supplierCategory._id">
+              {{supplierCategory.Category_Name}}
+            </mat-option>
+          </mat-select>
+          <mat-error>Please enter a Supplier Category</mat-error>
+        </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Class</mat-label>
+      <mat-select formControlName="Supplier_Class_Code">
+        <mat-option *ngFor="let class of classes" [value]="class._id">
+          {{class.Class_Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+     
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Supplier Rate</mat-label>
+      <mat-slider matInput min="1" max="10" formControlName="Supplier_Rate" 
+        aria-label="Rating Slider" id="rate-slider" class="md-primary">
+     </mat-slider>
+     <textarea matInput hidden></textarea>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field  class="form-field">
+      <mat-select multiple formControlName="Supplier_PaymentMethods" placeholder="Select payment methods">
+        <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod._id">
+          {{paymentMethod.PaymentMethod_Name}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Please select a payment method</mat-error>
+    </mat-form-field>
+   <mat-divider></mat-divider>
+
+   <mat-form-field  class="form-field">
+    <mat-select multiple formControlName="Supplier_WayOfDeliveries" placeholder="Select ways of deliveries">
+      <mat-option *ngFor="let way of waysOfDeliveries" [value]="way._id">
+        {{way.WayOfDeliverySchema_Name}}
+      </mat-option>
+    </mat-select>
+    <mat-error>Please select a way of delivery</mat-error>
+   </mat-form-field>
+  <mat-divider></mat-divider>
+
+    <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="Supplier_IsActive"
+    >
+    Supplier Status</mat-slide-toggle
+    >
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="supplierService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

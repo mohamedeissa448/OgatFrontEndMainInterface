@@ -1,0 +1,53 @@
+<mat-toolbar>
+    <div class="mat-toolbar-tools">
+        <h3 class="center-text">Change Percentage  For {{AffiliateSeller_Name}}</h3>
+    </div>
+  </mat-toolbar>
+<mat-card class="padded-content-page" >
+    <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+        <!--start inputs-->
+        <form  (ngSubmit)="onSubmit()">
+            <mat-dialog-content  class="d-flex p-2">
+                <mat-form-field class="form-field">
+                  <mat-label>Choose a date*</mat-label>
+                  <input matInput [matDatepicker]="picker" name="ChangeDate" [(ngModel)]="affiliateSeller_Percentage_Info.dateOfChanges">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error>Please choose a date</mat-error>
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                <mat-form-field class="form-field">
+                  <input
+                  matInput
+                  placeholder="Percentage *"
+                  name="percentage"
+                  [(ngModel)]= "affiliateSeller_Percentage_Info.Percentage"
+                  type="number"
+                />
+                <mat-error>Please enter an affiliate seller percentage</mat-error>
+                  <br>
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                
+                </mat-dialog-content>
+                
+        </form>    
+        <!-- end inputs -->
+    </div>
+    <mat-divider class="rxp-margin-top-larg"></mat-divider>
+    
+</mat-card>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="button"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+
+

@@ -1,0 +1,95 @@
+<mat-toolbar>
+    <div class="mat-toolbar-tools">
+        <h3 class="center-text">  {{ title }}</h3>
+    </div>
+  </mat-toolbar>
+<mat-card class="padded-content-page" >
+    <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+        <!--start inputs-->
+        <form  (ngSubmit)="onSubmit()">
+            <mat-dialog-content  class="d-flex p-2">
+                <mat-form-field class="form-field">
+                  <mat-label>Choose a date*</mat-label>
+                  <input matInput [matDatepicker]="picker" name="SupplierPayment_Date" [(ngModel)]="SupplierPayment_Date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error>Please choose a date</mat-error>
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                <mat-form-field class="form-field">
+                  <mat-select  [(ngModel)]="SupplierPayment_PaymentMethod" name="method" placeholder="Select a method">
+                    <mat-option *ngFor="let method of paymentMethods" [value]="method._id">
+                      {{ method.PaymentMethod_Name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error>Please enter a method</mat-error>
+                  <br>
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                
+                 <!--start supplier-->
+              <div class="form-field">
+                <mat-form-field class="example-full-width" style="width: 100%;">
+                  <mat-chip-list #chipList>
+                    <mat-chip
+                      *ngFor="let supplier of suppliers"
+                      [selectable]="selectable"
+                      [removable]="removable"
+                      (removed)="removeSupplier(supplier)">
+                      {{supplier}}
+                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                      placeholder="Select supplier..."
+                      #supplierInput
+                      [formControl]="supplierCtrl"
+                      [matAutocomplete]="autoSupplier"
+                      [matChipInputFor]="chipList"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      [matChipInputAddOnBlur]="addOnBlur"
+                      (matChipInputTokenEnd)="addSupplier($event)">
+                  </mat-chip-list>
+                  <mat-autocomplete #autoSupplier="matAutocomplete" (optionSelected)="selectedSupplier($event)">
+                    <mat-option *ngFor="let supplier of filteredSuppliers | async" [value]="supplier">
+                      {{supplier.Supplier_Name}},Code:({{supplier.Supplier_Code}})
+                    </mat-option>
+                  </mat-autocomplete>
+                  </mat-form-field> 
+                  
+
+            </div>
+              <!-- end supplier -->
+
+                <mat-form-field class="form-field">
+                  <input
+                    matInput
+                    placeholder="Amount of Payment*"
+                    name="SupplierPayment_Amount"
+                    [(ngModel)]= "SupplierPayment_Amount"
+                    type="number"
+                  />
+                  <mat-error>Please enter a amount of payment </mat-error>
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                </mat-dialog-content>
+                
+        </form>    
+        <!-- end inputs -->
+    </div>
+    <mat-divider class="rxp-margin-top-larg"></mat-divider>
+    
+</mat-card>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="button"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+
+

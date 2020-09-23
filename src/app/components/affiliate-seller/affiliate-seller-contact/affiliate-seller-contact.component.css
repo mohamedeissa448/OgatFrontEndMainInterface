@@ -1,0 +1,9 @@
+.add-button{
+    display: contents;
+}
+.add-button button{
+margin-left: 3em;
+}
+.deleteIcon{
+    cursor: pointer;
+}

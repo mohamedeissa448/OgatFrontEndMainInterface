@@ -1,0 +1,34 @@
+@page{
+    margin: 0px !important;
+}
+body{
+    margin: 0 !important;
+}
+.barcode svg{
+    height: 78px !important;
+    width: 260px !important;
+}
+.barcode{
+    height: 80px !important;
+    width: 260px !important;
+}
+.col-sm-4 {
+    width: 33.3%;
+    float: left;
+    text-align: center;
+    height: 37mm;
+}
+.ogt-barcode-name,.ogt-barcode-color{
+    font-size: 18px;
+}
+.ogt-barcode-ogat {
+    font-weight: bold;
+    font-size: 18px;
+}
+.ogt-barcode-name {
+    margin-top: 10px;
+    display: block;
+}
+.ogt-barcode-color {
+    margin-left: 22px;
+}

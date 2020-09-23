@@ -1,0 +1,119 @@
+
+<h2 mat-dialog-title> Add Increase Inventory</h2>
+<form>
+  <mat-dialog-content>
+    <div class="row rxp-margin-top-medium ogt-bottom-borderd-div">
+      <div class="col-6 ogt-show-placeholder">
+        <mat-form-field class="rxp-full-width-container ogt-date-picker-narrow" appearance="fill">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" name="IncreaseInventory_Date" [(ngModel)]=IncreaseInventory_Date>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field class="rxp-full-width-container">
+          <input matInput placeholder="Note" [(ngModel)]="IncreaseInventory_Note" name="IncreaseInventory_Note" />
+          <mat-error>Please enter a note </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!--start increasing products-->
+      <form #f="ngForm" (ngSubmit)="onAdd()">
+        <div class="row rxp-margin-top-medium">
+          <!--start inputs-->
+          <div class="col-4">
+              <mat-form-field class="rxp-full-width-container ogt-chips-narrow">
+                <mat-chip-list #chipList>
+                  <mat-chip *ngFor="let product of products" [selectable]="selectable" [removable]="removable"
+                    (removed)="remove(product)">
+                    {{product}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input placeholder="Product..." #productInput [formControl]="productCtrl" [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                  <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+                    {{product.Product_Name}},Code:({{product.Product_Code}})
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+          </div>
+          <div class="col-1 ogt-no-left-padding ogt-no-right-padding">
+            <mat-form-field class="rxp-full-width-container">
+              <mat-select [(ngModel)]="Size_Variant" name="Size_Variant" placeholder="Size">
+                <mat-option *ngFor="let size of sizeVariants" [value]="size">
+                  {{ size.Size_Name }}
+                </mat-option>
+              </mat-select>
+              <mat-error>Please enter a size variant</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-2">
+            <mat-form-field class="rxp-full-width-container">
+              <mat-select [(ngModel)]="Color_Variant" name="Color_Variant" placeholder="Color">
+                <mat-option *ngFor="let color of colorVariants" [value]="color"
+                  [style.background-color]="color.Color_HexaDecimalBasedValue">
+                  {{ color.Color_Name }}
+                </mat-option>
+              </mat-select>
+              <mat-error>Please enter a size variant</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-2 ogt-inrow-input-container">
+            <input name="Quantity" [(ngModel)]="Quantity" type="number" placeholder="Quantity" required />
+          </div>
+          <div class="col-2 ogt-inrow-input-container">
+            <input name="Cost" [(ngModel)]="Cost" type="number" placeholder="Cost:" required />
+          </div>
+          <div class="col-1 ogt-no-left-padding">   
+            <button class="btn btn-primary mr-1 rxp-full-width-container" type="submit" [disabled]="f.form.invalid">
+              <i class="fa fa-arrow-down"></i> Add
+            </button>
+          </div>
+        </div>
+      </form>
+        <!-- end inputs -->
+        <!--start table-->
+      <table class="ogt-custom-data-table">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Size Variant</th>
+            <th>Color Variant</th>
+            <th>Quantity</th>
+            <th>Cost</th>
+            <th class="rxp-righted-container ogt-right-padding-medium">..</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let increaseProduct of IncreaseInventory_Products.reverse()">
+            <td>{{ increaseProduct.Product.Product_Name }}</td>
+            <td>{{ increaseProduct.Size_Variant.Size_Name }}</td>
+            <td>{{ increaseProduct.Color_Variant.Color_Name }}</td>
+            <td>{{ increaseProduct.Quantity }}</td>
+            <td>{{ increaseProduct.Cost }}</td>
+            <td class="rxp-righted-container">
+              <span class="material-icons deleteIcon ogt-danger-action" (click)="deleteIncreaseProduct(increaseProduct)">
+                delete
+              </span>
+            </td>
+          </tr>
+          <br>
+        </tbody>
+      </table>
+        <!-- end table-->
+
+      <mat-divider class="rxp-margin-top-larg"></mat-divider>
+    <!--end increasing products-->
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button class="submit" class="btn btn-primary mr-1 ogt-form-submit-btt" type="submit" (click)="onSubmit()">
+      <i class="fa fa-check"></i> Save 
+    </button>
+  </mat-dialog-actions>
+</form>

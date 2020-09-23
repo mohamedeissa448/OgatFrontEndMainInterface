@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form [formGroup]="productUnitsService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Product Unit Name*" formControlName="ProductUnit_Name" />
+      <mat-error>Please enter a Product Unit Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Product Unit Description"
+        formControlName="ProductUnit_Description"
+      />
+      <mat-error>Please enter a Product Unit description</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="ProductUnit_IsActive"
+    >
+      Product Unit Status</mat-slide-toggle
+    >
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="productUnitsService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

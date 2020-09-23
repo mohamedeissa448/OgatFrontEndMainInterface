@@ -1,0 +1,130 @@
+<div class="rxp-header-tool-box">
+    <ul class="nav navbar-nav rxp-header-tool-box-nav">
+      <div *ngIf= "this.authService.currentUser.User_Permissions.includes('canViewAffilateSellers')"
+        class="navbar-form search-form rxp-header-tool-search-box" id="navbar-search">
+          <input class="form-control rxp-search-text-box" (keyup)="applyFilter()" placeholder="Search for affiliate Sellers..." 
+            type="text" autocomplete="off" [(ngModel)]="searchKey" value=""/>
+          <button class="btn btn-default" type="button">
+            <i class="icon-magnifier"></i>
+          </button>
+          <button class="btn btn-clear-text" *ngIf="searchKey" aria-label="Clear" (click)="onSearchClear()">
+            <mat-icon>close</mat-icon>
+          </button>
+      </div>
+      <li *ngIf= "this.authService.currentUser.User_Permissions.includes('canAddNewAffilateSeller')">
+        <a (click)="onAdd()" class="icon-menu d-none d-sm-block">
+          <i class="wi wi-day-sunny"></i> Add
+        </a>
+      </li>
+    </ul>
+  </div>
+    <div class="rxp-data-table-bg">
+      <table mat-table [dataSource]="affiliateSellers" class="mat-elevation-z8" matSort>
+        <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+        <ng-container matColumnDef="Code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.AffiliateSeller_Code }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.AffiliateSeller_Name }}
+          </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.AffiliateSeller_Type }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Contacts">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Contacts</th>
+          <td mat-cell *matCellDef="let element">
+            <a *ngIf= "this.authService.currentUser.User_Permissions.includes('canEditAffilateSeller')"
+            (click)="openContacts(element)"><span class="material-icons contact">
+              contact_mail
+              </span></a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Pay">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Pay</th>
+            <td mat-cell *matCellDef="let element">
+              <a *ngIf= "this.authService.currentUser.User_Permissions.includes('canAddPaymentsForAffilateSeller')"
+              (click)="openToPay(element)"><span class="material-icons">
+          monetization_on
+          </span></a>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Change Revenue Percentage">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Change Revenue Percentage</th>
+          <td mat-cell *matCellDef="let element">
+            <a *ngIf= "this.authService.currentUser.User_Permissions.includes('canChangeAffilateSellerPercentage')"
+            (click)="openToChangeRevenuePercentage(element)" style="cursor: pointer;"><span class="material-icons">
+              trending_up
+              </span>
+            </a>
+          </td>
+      </ng-container>
+     
+        <ng-container matColumnDef="Active">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+          <td mat-cell *matCellDef="let element">
+            <input
+              type="checkbox"
+              disabled="disabled"
+              [checked]="element.AffiliateSeller_IsActive == 1 ? true : false"
+            />
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Actions">
+          <th mat-header-cell *matHeaderCellDef>Tools</th>
+          <td mat-cell *matCellDef="let element"  class="rxp-grid-one-btts">
+            <button class="btn btn-default mr-1" 
+              (click)="onEdit(element)" title="Edit" type="button"
+              *ngIf= "this.authService.currentUser.User_Permissions.includes('canEditAffilateSeller')">
+              <span class="sr-only">Edit</span>
+              <i class="icon-pencil"></i>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            Loading data...
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            No data.
+          </mat-footer-cell>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <mat-footer-row
+          *matFooterRowDef="['loading']"
+          [ngClass]="{ hide: affiliateSellers != null }"
+        ></mat-footer-row>
+        <mat-footer-row
+          *matFooterRowDef="['noData']"
+          [ngClass]="{
+            hide: !(affiliateSellers && affiliateSellers.data != null && affiliateSellers.data.length == 0)
+          }"
+        ></mat-footer-row>
+      </table>
+      <mat-card *ngIf="isLoading" class="rxp-ingrid-loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </mat-card>
+    </div>
+    <mat-paginator
+      [length]="100"
+      [pageSize]="20"
+      [pageSizeOptions]="[20, 25, 50, 100]"
+      showFirstLastButtons
+    >
+    </mat-paginator>

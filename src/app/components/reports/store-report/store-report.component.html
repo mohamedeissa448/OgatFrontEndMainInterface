@@ -1,0 +1,69 @@
+<div class="rxp-header-tool-box">
+</div>
+<div class="rxp-data-table-bg">
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-4">
+      Product
+    </div>
+    <div class="col-1 rxp-centered-container">
+      41 EU
+    </div>
+    <div class="col-1 rxp-centered-container">
+      42 EU
+    </div>
+    <div class="col-1 rxp-centered-container">
+      43 EU
+    </div>
+    <div class="col-1 rxp-centered-container">
+      44 EU
+    </div>
+    <div class="col-1 rxp-centered-container">
+      45 EU
+    </div>
+    <div class="col-1 rxp-centered-container">
+      46 EU
+    </div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row" *ngFor="let Product of storeProducts">
+    <div class="col-1"></div>
+    <div class="col-10 ogt-main-item-in-reportgrid">
+      <span class="ogt-report-intable-product-name">{{Product._id.ProductName}}</span>
+      <span class="ogt-report-intable-product-code">(Code: {{Product._id.ProductCode}})</span>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-12">
+      <div class="row ogt-sub-item-in-reportgrid" *ngFor="let color of Product.Colors" >
+        <div class="col-2"></div>
+        <div class="col-3">
+          <i class="ogt-color-indicator" [style.background-color]="color.ColorHexa" ></i>
+          <span class="ogt-report-intable-color-name">{{color.Color}}</span>
+        </div>
+        <div class="col-1 rxp-centered-container ogt-size-cell">
+          {{getCountOfSize(color.Sizes, '41 EU')}}
+        </div>
+        <div class="col-1 rxp-centered-container ogt-size-cell">
+          {{getCountOfSize(color.Sizes, '42 EU')}}
+        </div>
+        <div class="col-1 rxp-centered-container ogt-size-cell">
+          {{getCountOfSize(color.Sizes, '43 EU')}}
+        </div>
+        <div class="col-1 rxp-centered-container ogt-size-cell">
+          {{getCountOfSize(color.Sizes, '44 EU')}}
+        </div>
+        <div class="col-1 rxp-centered-container ogt-size-cell">
+          {{getCountOfSize(color.Sizes, '45 EU')}}
+        </div>
+        <div class="col-1 rxp-centered-container ogt-size-cell">
+          {{getCountOfSize(color.Sizes, '46 EU')}}
+        </div>
+        <div class="col-1"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- <td class="tg-0pky" [style.background-color]="color.ColorHexa"> -->
+        
+  <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+</div>

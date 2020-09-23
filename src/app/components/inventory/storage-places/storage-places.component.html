@@ -1,0 +1,69 @@
+<div class="rxp-header-tool-box">
+  <ul class="nav navbar-nav rxp-header-tool-box-nav">
+    <div class="navbar-form search-form rxp-header-tool-search-box rxp-header-tool-select-box" id="navbar-search">
+      <mat-form-field appearance="fill" class="rxp-full-width-container">
+          <mat-label>Store</mat-label>
+          <mat-select name="SelectedStoreCode" (selectionChange)="changeStoreLocation()" [(value)]="SelectedStoreCode" required>
+          <mat-option *ngFor="let store of StoreLocations" [value]="store._id">
+            {{store.StoragePlace_DisplayName}}
+          </mat-option>
+          <mat-option class="in-select-btt" [value]="0" (click)="AddNewStoreLocation()">
+            <i *ngIf="this.authService.currentUser.User_Permissions.includes('canDefineStorageBlaces')" class="wi wi-day-sunny"></i> Add New Store Location
+          </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+  </ul>
+</div>
+<div class="rxp-data-none-table-bg">
+  <div class="row">
+    <div class="col-sm-12 rxp-centered-container">
+      <button *ngIf="this.authService.currentUser.User_Permissions.includes('canDefineStorageBlaces')"
+      class="btn btn-default mr-1 ogt-colored-btt" (click)="AddSubLevelStoreLocation(FirstLevelTitle,SelectedStoreCode,SelectedStoreIdentifier())">
+        <i class="wi wi-day-sunny"></i>
+        <span>Add New {{ FirstLevelTitle }}</span>
+      </button>
+    </div>
+  </div>
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+      <li class="mat-tree-node">
+        <!-- use a disabled button to provide padding for tree leaf -->
+        <button mat-icon-button disabled></button>
+        {{node.StoragePlace_DisplayName}}
+        <a 
+          class="ogt-in-tree-add-btt" *ngIf="node.StoragePlace_SubLevelTitle  && this.authService.currentUser.User_Permissions.includes('canDefineStorageBlaces')" (click)="AddSubLevelStoreLocation(node.StoragePlace_SubLevelTitle,node._id,node.StoragePlace_Identifier)">
+          <i class="wi wi-day-sunny"></i> Add {{node.StoragePlace_SubLevelTitle}}
+        </a>
+      </li>
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+      <li>
+        <div class="mat-tree-node">
+          <button mat-icon-button matTreeNodeToggle
+                  [attr.aria-label]="'toggle ' + node.StoragePlace_DisplayName">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          {{node.StoragePlace_DisplayName}} 
+          <a class="ogt-in-tree-add-btt" 
+          *ngIf="node.StoragePlace_SubLevelTitle && this.authService.currentUser.User_Permissions.includes('canDefineStorageBlaces')" 
+          (click)="AddSubLevelStoreLocation(node.StoragePlace_SubLevelTitle,node._id,node.StoragePlace_Identifier)">
+            <i class="wi wi-day-sunny"></i> Add {{node.StoragePlace_SubLevelTitle}}
+          </a>
+        </div>
+        <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </ul>
+      </li>
+    </mat-nested-tree-node>
+  </mat-tree>
+  
+  <mat-card *ngIf="isLoading" class="rxp-ingrid-loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </mat-card>
+</div>
+  

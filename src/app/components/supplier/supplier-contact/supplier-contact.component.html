@@ -1,0 +1,76 @@
+<mat-toolbar>
+    <div class="mat-toolbar-tools">
+        <h3 class="center-text">Contact List For {{Supplier_Name}}</h3>
+    </div>
+  </mat-toolbar>
+<mat-card class="padded-content-page" >
+    <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+        <!--start inputs-->
+        <form #f="ngForm" (ngSubmit)="onAdd(f)">
+            <div class="your-class">
+                <input name="Supplier_ContactTitle" [(ngModel)]="Supplier_ContactTitle" id="First_Name" type="text" placeholder="First Name:"required/>
+                <input name="Supplier_ContactName" [(ngModel)]="Supplier_ContactName" type="text" placeholder="Last Name:"required /> 
+                <input name="Supplier_ContactTelephone" [(ngModel)]="Supplier_ContactTelephone" type="text" placeholder="Telephone:"required /> 
+                <input name="Supplier_ContactEmail" [(ngModel)]="Supplier_ContactEmail" id="Email" type="text" placeholder="Email:" required/> 
+                <mat-dialog-actions  class="add-button">
+                    <button
+                    mat-raised-button
+                    mat-primary
+                    type="submit"
+                    [disabled]="f.form.invalid"
+                    >
+                    ADD
+                    </button>
+                </mat-dialog-actions>
+
+            </div>
+        </form>    
+        <!-- end inputs -->
+        <!--start table-->
+        <table>
+	
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Name</th>
+                <th>Telephone</th>
+                <th>Email</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr  *ngFor="let contact of Supplier_Contacts">
+                <td>{{ contact.Supplier_ContactTitle }}</td>
+                <td>{{ contact.Supplier_ContactName }}</td>
+                <td>{{ contact.Supplier_ContactTelephone }}</td>
+                <td>{{ contact.Supplier_ContactEmail }}</td>
+                <td> 
+                    <span class="material-icons deleteIcon"(click)="deleteContact(contact)">
+                    delete
+                    </span>
+                </td>
+              </tr>
+              <br>
+              
+          </tbody>
+          <caption>Contacts</caption>
+        </table>
+        <!-- end table-->
+        
+    </div>
+    <mat-divider class="rxp-margin-top-larg"></mat-divider>
+    
+</mat-card>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="button"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+
+

@@ -1,0 +1,10 @@
+.link{
+    color:blue;
+    cursor: pointer;
+}
+.default{
+    font-family: cursive;
+    font-weight: bold;
+    color: blueviolet;
+    cursor: pointer;
+}

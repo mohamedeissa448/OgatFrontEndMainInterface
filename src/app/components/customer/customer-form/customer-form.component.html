@@ -1,0 +1,124 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+{{customerService.form.value |json}}
+<form [formGroup]="customerService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content  class="d-flex p-2">
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Customer Name*" formControlName="Customer_Name" />
+      <mat-error>Please enter a Customer Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Address Name*"
+        formControlName="AddressName"
+      />
+      <mat-error>Please enter a Address Name</mat-error>
+      <br>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Contact Name*"
+        formControlName="ContactName"
+      />
+      <mat-error>Please enter a Contact Name </mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Mobile*"
+        formControlName="Mobile"
+      />
+      <mat-error>Please enter a Mobile</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Building*"
+        formControlName="Building"
+      />
+      <mat-error>Please enter a Building</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+        <input
+          matInput
+          placeholder="Floor*"
+          formControlName="Floor"
+        />
+        <mat-error>Please enter a Floor</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+      <mat-form-field class="form-field">
+        <input
+          matInput
+          placeholder="Apartment*"
+          formControlName="Apartment"
+        />
+        <mat-error>Please enter a Apartment</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+      <mat-form-field class="form-field">
+        <input
+          matInput
+          placeholder="Street Address*"
+          formControlName="StreetAddress"
+        />
+        <mat-error>Please enter a Street Address</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+      <mat-form-field class="form-field">
+        <input
+          matInput
+          placeholder="City*"
+          formControlName="City"
+        />
+        <mat-error>Please enter a City</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+    <mat-form-field appearance="fill"class="form-field">
+      <mat-label>Province</mat-label>
+      <mat-select formControlName="Province">
+        <mat-option *ngFor="let province of provinces" [value]="province._id">
+          {{province.Province_Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field appearance="fill"class="form-field">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="Customer_Status">
+        <mat-option *ngFor="let status of statusArray" [value]="status.value">
+          {{status.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+  
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="customerService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

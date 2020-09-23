@@ -1,0 +1,135 @@
+<div class="row">
+    <div class="col-sm-12">
+      <div class="rxp-data-table-bg rxp-data-table-bg-warehousing">
+        <h4 class="in-table-container-header"><i class="icon-info"></i>Products</h4>
+        <div class="search-form" id="navbar-search">
+            <input class="form-control rxp-search-text-box"(keyup)="applyFilter()"  placeholder="Search for Product ..." 
+                type="text" name="searchProductKey" [(ngModel)]="searchProductKey" value=""/>
+            <button class="btn btn-default" type="submit">
+                <i class="icon-magnifier"></i>
+            </button>
+            <button class="btn btn-clear-text"  *ngIf="searchProductKey" aria-label="Clear" (click)="onSearchProductClear()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <table mat-table [dataSource]="UnHousedProductsList" class="mat-elevation-z8" matSort>
+            <ng-container matColumnDef="ProductSelect" >
+                <mat-header-cell class="rxp-column-select-header" *matHeaderCellDef>
+                  <mat-checkbox *ngIf="ProductSelection" (change)="$event ? masterToggle() : null"
+                                [checked]="ProductSelection.hasValue() && isAllSelected()"
+                                [indeterminate]="ProductSelection.hasValue() && !isAllSelected()">
+                  </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell  *matCellDef="let row">
+                  <mat-checkbox class="rxp-row-select-item" *ngIf="ProductSelection" (click)="$event.stopPropagation()"
+                                (change)="$event ? ProductSelection.toggle(row) : null"
+                                [checked]="ProductSelection.isSelected(row)">
+                  </mat-checkbox>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Code">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.ProductIdentifier }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Name
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.ProductName }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="ColorVariant">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Color
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.Color_Variant.Color_Name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="SizeVariant">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Size
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.Size_Variant.Size_Name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="StoreQuantity">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Qty
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.Store_Quantity }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="PrintQuantity">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Print Qty
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <input placeholder="Qty To Print" 
+                        type="number" name="PrintQuantityTXT" [(ngModel)]="element.Store_PrintQuantity"/>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Barcode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Barcode
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <ngx-barcode class="ogt-ingrid-barcode" [bc-value]="element.ProductBarcode" 
+                        [bc-format]="'CODE128'" [bc-display-value]="true">
+                    </ngx-barcode>
+                </td>
+            </ng-container>
+              
+            <ng-container matColumnDef="loading">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                Loading data...
+              </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="noData">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                No data.
+              </mat-footer-cell>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="UnHaouseddisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: UnHaouseddisplayedColumns"></tr>
+            <mat-footer-row
+              *matFooterRowDef="['loading']"
+              [ngClass]="{ hide: UnHousedProductsList != null }"
+            ></mat-footer-row>
+            <mat-footer-row
+              *matFooterRowDef="['noData']"
+              [ngClass]="{
+                hide: !(UnHousedProductsList != null && UnHousedProductsList.length == 0)
+              }"
+            ></mat-footer-row>
+        </table>
+      </div>
+      <mat-paginator #Productpaginator
+          [length]="100"
+          [pageSize]="20"
+          [pageSizeOptions]="[20, 25, 50, 100]"
+          showFirstLastButtons>
+      </mat-paginator>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-9">
+        <h4 class="ogt-printing-setting"> <i class="icon-wrench"></i> Print Setting:</h4>
+        <label class="ogt-printing-setting-label">Number of Barcode To Skip</label>
+        <input placeholder="Enter Barcode To Skip" class="ogt-printing-setting-input" 
+            type="number" name="SkipLableCount" [(ngModel)]="SkipLableCount"/>
+        <label class="ogt-printing-setting-label">Paper: A4 with 24 sticky labels (no borders)</label>
+    </div>
+    <div *ngIf="this.authService.currentUser.User_Permissions.includes('canPrintProductBarcode')"
+        class="col-sm-3 rxp-warehousing-container rxp-righted-container">
+        <button type="button" class="btn btn-success mr-1 rxp-warehousing-btt" 
+            title="Print Barcode" (click)="IntiatePrintItems()">
+            <i class="icon-printer"></i><span class="rxp-warehousing-btt-txt"> Print Barcode</span>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+{{shippingCompanyService.form.value |json}}
+<form [formGroup]="shippingCompanyService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content  class="d-flex p-2">
+    <mat-form-field class="form-field">
+      <input matInput placeholder="ShippingCompany Name*" formControlName="ShippingCompany_Name" />
+      <mat-error>Please enter a Shipping Company Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Email*"
+        formControlName="ShippingCompany_Email"
+      />
+      <mat-error>Please enter a Shipping Company Email</mat-error>
+      <br>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Phone*"
+        formControlName="ShippingCompany_Phone"
+      />
+      <mat-error>Please enter a Shipping Company Phone</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Website Url*"
+        formControlName="ShippingCompany_WebsiteURL"
+      />
+      <mat-error>Please enter a Shipping Company Website Url</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="FaceBookPageURL*"
+        formControlName="ShippingCompany_FaceBookPageURL"
+      />
+      <mat-error>Please enter a Shipping Company FaceBookPageURL</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field appearance="fill"class="form-field">
+      <mat-label>Country</mat-label>
+      <mat-select formControlName="ShippingCompany_Country">
+        <mat-option *ngFor="let country of countries" [value]="country._id">
+          {{country.Country_Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="City*"
+        formControlName="ShippingCompany_City"
+      />
+      <mat-error>Please enter a Shipping Company City</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Address*"
+        formControlName="ShippingCompany_Address"
+      />
+      <mat-error>Please enter a Shipping Company Address</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Class</mat-label>
+      <mat-select formControlName="ShippingCompany_Class_Code">
+        <mat-option *ngFor="let class of classes" [value]="class._id">
+          {{class.Class_Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+     
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Shipping Company Rate</mat-label>
+      <mat-slider matInput min="1" max="10" formControlName="ShippingCompany_Rate" 
+        aria-label="Rating Slider" id="rate-slider" class="md-primary">
+     </mat-slider>
+     <textarea matInput hidden></textarea>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="ShippingCompany_IsActive"
+    >
+    Shipping Company Status</mat-slide-toggle
+    >
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="shippingCompanyService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

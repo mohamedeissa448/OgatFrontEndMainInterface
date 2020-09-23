@@ -1,0 +1,133 @@
+<mat-toolbar>
+    <div class="mat-toolbar-tools">
+        <h3 class="center-text">Billing Address For {{Customer_Name}}</h3>
+    </div>
+  </mat-toolbar>
+<mat-card class="padded-content-page" >
+    <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+        <!--start inputs-->
+        <form  (ngSubmit)="onSubmit()">
+            <mat-dialog-content  class="d-flex p-2">
+
+          
+                <mat-form-field class="form-field">
+                    <input
+                      matInput
+                      name="Address Name"
+                      placeholder="Address Name*"
+                      [(ngModel)]="Customer_BillingAddress.AddressName"
+                    />
+                    <mat-error>Please enter a Address Name</mat-error>
+                    <br>
+                  </mat-form-field>
+                  <mat-divider></mat-divider>
+                  <mat-form-field class="form-field">
+                    <input
+                      matInput
+                      name="Contact Name"
+                      placeholder="Contact Name*"
+                      [(ngModel)]="Customer_BillingAddress.ContactName"
+                    />
+                    <mat-error>Please enter a Contact Name </mat-error>
+                  </mat-form-field>
+                  <mat-divider></mat-divider>
+              
+                  <mat-form-field class="form-field">
+                    <input
+                      matInput
+                      name="Mobile"
+                      placeholder="Mobile*"
+                      [(ngModel)]="Customer_BillingAddress.Mobile"
+                    />
+                    <mat-error>Please enter a Mobile</mat-error>
+                  </mat-form-field>
+                  <mat-divider></mat-divider>
+              
+                  <mat-form-field class="form-field">
+                    <input
+                      matInput
+                      name="Building"
+                      placeholder="Building*"
+                      [(ngModel)]="Customer_BillingAddress.Building"
+                    />
+                    <mat-error>Please enter a Building</mat-error>
+                  </mat-form-field>
+                  <mat-divider></mat-divider>
+              
+                  <mat-form-field class="form-field">
+                      <input
+                        matInput
+                        name="Floor"
+                        placeholder="Floor*"
+                        [(ngModel)]="Customer_BillingAddress.Floor"
+                      />
+                      <mat-error>Please enter a Floor</mat-error>
+                    </mat-form-field>
+                    <mat-divider></mat-divider>
+              
+                    <mat-form-field class="form-field">
+                      <input
+                        matInput
+                        name="Apartment"
+                        placeholder="Apartment*"
+                        [(ngModel)]="Customer_BillingAddress.Apartment"
+                      />
+                      <mat-error>Please enter a Apartment</mat-error>
+                    </mat-form-field>
+                    <mat-divider></mat-divider>
+              
+                    <mat-form-field class="form-field">
+                      <input
+                        matInput
+                        name="StreetAddress"
+                        placeholder="Street Address*"
+                        [(ngModel)]="Customer_BillingAddress.StreetAddress"
+                      />
+                      <mat-error>Please enter a Street Address</mat-error>
+                    </mat-form-field>
+                    <mat-divider></mat-divider>
+              
+                    <mat-form-field class="form-field">
+                      <input
+                        matInput
+                        name="City"
+                        placeholder="City*"
+                        [(ngModel)]="Customer_BillingAddress.City"
+                      />
+                      <mat-error>Please enter a City</mat-error>
+                    </mat-form-field>
+                    <mat-divider></mat-divider>
+
+                <mat-form-field class="form-field">
+                    <mat-select  [(ngModel)]="Customer_BillingAddress.Province" name="Province" placeholder="Select a province">
+                      <mat-option *ngFor="let province of provinces" [value]="province._id">
+                        {{ province.Province_Name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Please enter a province</mat-error>
+                    <br>
+                  </mat-form-field>
+                  <mat-divider></mat-divider>
+
+                </mat-dialog-content>
+                
+        </form>    
+        <!-- end inputs -->
+    </div>
+    <mat-divider class="rxp-margin-top-larg"></mat-divider>
+    
+</mat-card>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="button"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+
+

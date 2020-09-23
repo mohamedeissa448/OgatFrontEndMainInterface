@@ -1,0 +1,72 @@
+<mat-toolbar color="secondary" style="margin-bottom: 5px;">
+
+    <h2 mat-dialog-title>{{ title }}</h2>
+  
+  </mat-toolbar>
+  <form >
+    <mat-dialog-content>
+      
+      <!--start decreasing products-->
+      <mat-card class="padded-content-page" >
+          <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+              
+            <mat-form-field  class="m-right">
+            <mat-select  [(ngModel)]="Order_Status" name="Order_Status" placeholder="Order Status " >
+                <mat-option *ngFor="let status of allStatus" [value]="status">
+                {{ status }}
+                </mat-option>
+            </mat-select>
+            <mat-error>Please select a status</mat-error>
+            </mat-form-field>
+
+            
+            <!--start cancelation details -->
+            <mat-form-field appearance="fill"class="form-field" *ngIf="Order_Status == 'Cancelled'" style="margin-left: 22em;">
+              <mat-label>Choose a date*</mat-label>
+              <input matInput [matDatepicker]="pickerForCancelation" name="Cancelation_Date" [(ngModel)]='Cancelation_Date' >
+              <mat-datepicker-toggle matSuffix [for]="pickerForCancelation"></mat-datepicker-toggle>
+              <mat-datepicker #pickerForCancelation></mat-datepicker>
+            </mat-form-field>
+
+           <mat-form-field  class="m-right" *ngIf="Order_Status == 'Cancelled'" >
+              <mat-select  [(ngModel)]="Cancelation_ReasonOfCancelation" name="Cancelation_ReasonOfCancelation" placeholder="Cancelation reason" >
+                <mat-option *ngFor="let reason of cancelationReasons" [value]="reason._id">
+                {{ reason.ReasonOfCalcelation_Name }}
+                </mat-option>
+             </mat-select>
+              <mat-error>Please select a reason</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-field" *ngIf="Order_Status == 'Cancelled'"style="margin-left: 22em;">
+            <input
+              matInput
+              placeholder="Note*"
+              [(ngModel)]="Cancelation_Note"
+              name="Cancelation_Note"
+              
+           />
+            <mat-error>Please enter a note </mat-error>
+            </mat-form-field>
+          <!--end cancelation details -->
+         
+          <!--end return details -->
+              
+        </div>
+          <mat-divider class="rxp-margin-top-larg"></mat-divider>
+          
+      </mat-card>
+    </mat-dialog-content>
+  
+    <mat-dialog-actions>
+      <button
+      class="submit"
+        mat-raised-button
+        mat-secondary
+        type="submit"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </form>
+  

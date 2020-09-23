@@ -1,0 +1,71 @@
+<mat-toolbar>
+    <div class="mat-toolbar-tools">
+        <h3 class="center-text">Contract For {{ShippingCompany_Name}}</h3>
+    </div>
+  </mat-toolbar>
+<mat-card class="padded-content-page" >
+    <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+        <!--start inputs-->
+        <form  (ngSubmit)="onSubmit()">
+            <mat-dialog-content  class="d-flex p-2">
+                <mat-form-field class="form-field">
+                  <mat-label>Choose a date*</mat-label>
+                  <input matInput [matDatepicker]="picker" name="ContractDate" [(ngModel)]="ContractDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error>Please choose a date</mat-error>
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                <mat-form-field class="form-field">
+                  <mat-select  [(ngModel)]="ContractPriceAndCost.Province" name="Province" placeholder="Select a province">
+                    <mat-option *ngFor="let province of provinces" [value]="province._id">
+                      {{ province.Province_Name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error>Please enter a province</mat-error>
+                  <br>
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                <mat-form-field class="form-field">
+                  <input
+                    matInput
+                    placeholder="Shipping Price*"
+                    name="ShippingPrice"
+                    [(ngModel)]= "ContractPriceAndCost.ShippingPrice"
+                    type="number"
+                  />
+                  <mat-error>Please enter a Shipping Price</mat-error>
+                </mat-form-field>
+                <mat-form-field class="form-field">
+                  <input
+                    matInput
+                    placeholder="Shipping Cost*"
+                    name="ShippingCost"
+                    [(ngModel)]= "ContractPriceAndCost.ShippingCost"
+                    type="number"
+                  />
+                  <mat-error>Please enter a Shipping Price</mat-error>
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                </mat-dialog-content>
+                
+        </form>    
+        <!-- end inputs -->
+    </div>
+    <mat-divider class="rxp-margin-top-larg"></mat-divider>
+    
+</mat-card>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="button"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+
+

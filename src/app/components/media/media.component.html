@@ -1,0 +1,109 @@
+<div class="rxp-header-tool-box">
+    <ul class="nav navbar-nav rxp-header-tool-box-nav">
+      <div class="navbar-form search-form rxp-header-tool-search-box" id="navbar-search">
+          <input class="form-control rxp-search-text-box" (keyup)="applyFilter()" placeholder="Search for media..." 
+            type="text" autocomplete="off" [(ngModel)]="searchKey" value=""/>
+          <button class="btn btn-default" type="button">
+            <i class="icon-magnifier"></i>
+          </button>
+          <button class="btn btn-clear-text" *ngIf="searchKey" aria-label="Clear" (click)="onSearchClear()">
+            <mat-icon>close</mat-icon>
+          </button>
+      </div>
+      <li *ngIf="this.authService.currentUser.User_Permissions.includes('canUplodMedia')">
+        <a (click)="onAdd()" class="icon-menu d-none d-sm-block">
+          <i class="wi wi-day-sunny"></i> Add
+        </a>
+      </li>
+    </ul>
+  </div>
+    <div class="rxp-data-table-bg">
+      <table mat-table [dataSource]="medias" class="mat-elevation-z8" matSort>
+        <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+        <ng-container matColumnDef="Type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.Media_Type }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.Media_Title }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="MetaTags">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>MetaTags</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.Media_MetaTags }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="AlternativeText">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>AlternativeText</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.Media_AlternativeText }}
+            </td>
+          </ng-container>
+    
+        <ng-container matColumnDef="Description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.Media_Describtion }}
+          </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Image">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+          <td mat-cell *matCellDef="let element">
+            <img
+            class="serviceImage"
+            [src]="serverURL +'/images/'+element.Media_SamllImageUrl"
+          />
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Actions">
+          <th mat-header-cell *matHeaderCellDef>Tools</th>
+          <td mat-cell *matCellDef="let element"  class="rxp-grid-one-btts">
+            <button class="btn btn-default mr-1" 
+              (click)="onEdit(element)" title="Edit" type="button"
+              *ngIf="this.authService.currentUser.User_Permissions.includes('canEditMedia')">
+              <span class="sr-only">Edit</span>
+              <i class="icon-pencil"></i>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            Loading data...
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            No data.
+          </mat-footer-cell>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <mat-footer-row
+          *matFooterRowDef="['loading']"
+          [ngClass]="{ hide: medias != null }"
+        ></mat-footer-row>
+        <mat-footer-row
+          *matFooterRowDef="['noData']"
+          [ngClass]="{
+            hide: !(medias && medias.data != null && medias.data.length == 0)
+          }"
+        ></mat-footer-row>
+      </table>
+      <mat-card *ngIf="isLoading" class="rxp-ingrid-loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </mat-card>
+    </div>
+    <mat-paginator
+      [length]="100"
+      [pageSize]="20"
+      [pageSizeOptions]="[20, 25, 50, 100]"
+      showFirstLastButtons
+    >
+    </mat-paginator>

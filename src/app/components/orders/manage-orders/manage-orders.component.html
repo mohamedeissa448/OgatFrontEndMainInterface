@@ -1,0 +1,118 @@
+<div class="rxp-header-tool-box">
+    <ul class="nav navbar-nav rxp-header-tool-box-nav">
+      <div class="navbar-form search-form rxp-header-tool-search-box" id="navbar-search">
+          <input class="form-control rxp-search-text-box" (keyup)="applyFilter()" placeholder="Search for orders..." 
+            type="text" autocomplete="off" [(ngModel)]="searchKey" value=""/>
+          <button class="btn btn-default" type="button">
+            <i class="icon-magnifier"></i>
+          </button>
+          <button class="btn btn-clear-text" *ngIf="searchKey" aria-label="Clear" (click)="onSearchClear()">
+            <mat-icon>close</mat-icon>
+          </button>
+      </div>
+      <!--
+      <li>
+        <a (click)="onAdd()" class="icon-menu d-none d-sm-block">
+          <i class="wi wi-day-sunny"></i> Add
+        </a>
+      </li>-->
+    </ul>
+  </div>
+    <div class="rxp-data-table-bg">
+      <table mat-table [dataSource]="orders" class="mat-elevation-z8" matSort>
+        <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+        <ng-container matColumnDef="Code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.Order_Code }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Order Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.Order_Date | date}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Note">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.Order_Note }}
+          </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="Total Product Selling Amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Product Selling Amount</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.Order_TotalProductSellingAmount }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Customer Name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Name</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.Order_Customer.Customer_Name }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Customer Code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Code</th>
+          <td mat-cell *matCellDef="let element">
+              {{ element.Order_Customer.Customer_Code }}
+          </td>
+      </ng-container>
+
+        <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.Order_Status }}
+            </td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="Actions">
+          <th mat-header-cell *matHeaderCellDef>Tools</th>
+          <td mat-cell *matCellDef="let element"  class="rxp-grid-one-btts">
+            <button class="btn btn-default mr-1" 
+              (click)="AssignTaskTo(element)" title="AssignTaskTo" type="button"
+              *ngIf="this.authService.currentUser.User_Permissions.includes('canAssignOrders')">
+              <span class="sr-only">Assign Task To</span>
+              <i class="icon-pencil"></i>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            Loading data...
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            No data.
+          </mat-footer-cell>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <mat-footer-row
+          *matFooterRowDef="['loading']"
+          [ngClass]="{ hide: orders != null }"
+        ></mat-footer-row>
+        <mat-footer-row
+          *matFooterRowDef="['noData']"
+          [ngClass]="{
+            hide: !(orders && orders.data != null && orders.data.length == 0)
+          }"
+        ></mat-footer-row>
+      </table>
+      <mat-card *ngIf="isLoading" class="rxp-ingrid-loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </mat-card>
+    </div>
+    <mat-paginator
+      [length]="100"
+      [pageSize]="20"
+      [pageSizeOptions]="[20, 25, 50, 100]"
+      showFirstLastButtons
+    >
+    </mat-paginator>

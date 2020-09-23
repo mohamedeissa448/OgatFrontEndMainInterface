@@ -1,0 +1,27 @@
+<button type="button" (click)="close()" tabindex="-1" class="btn rxp-close-dialog-btt mr-1" title="Close">
+    <span class="sr-only">Close</span> 
+    <i class="icon-close"></i>
+</button>
+<h2 mat-dialog-title>User Permisions ({{UserData.UserName}})</h2>
+<mat-dialog-content>
+    <h5 class="rxp-permission-section-header">Control Panel Permisions</h5>
+    <div class="rxp-permission-container" *ngFor="let group of SystemPermisions | keyvalue">
+        <h5 class="rxp-permission-group-header">{{group.key}}</h5>
+        <div class="row rxp-permission-group-row">
+            <div class="col-sm-6 rxp-permission-check" *ngFor="let permission of group.value">
+                <mat-slide-toggle color="accent" matInput name="IsEnabled" 
+                    [(ngModel)]="permission.IsEnabled">
+                    {{permission.PermissionDisplayName}}
+                </mat-slide-toggle>
+            </div>
+        </div>
+    </div>
+    <div class="rxp-dialog-action-panel">
+        <button *ngIf="!saveIsLoading" type="button" class="btn btn-primary mr-1" (click)="SavePermissionData()" title="Save Permissions" >
+            <i class="fa fa-check"></i>&nbsp;<span>Save Permissions</span>
+        </button>
+        <div class="progress rxp-loading-container" *ngIf="saveIsLoading">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+        </div>
+    </div>
+</mat-dialog-content>

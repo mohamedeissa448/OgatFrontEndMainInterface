@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form [formGroup]="sizesService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Size Name*" formControlName="Size_Name" />
+      <mat-error>Please enter a Size Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    
+    <mat-form-field>
+      <input matInput placeholder="Two Letters as Identifier*" formControlName="Size_TwoLettersIdentifier" />
+      <mat-error>Please enter an Identifier</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Size Description"
+        formControlName="Size_Description"
+      />
+      <mat-error>Please enter a Size description</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="Size_IsActive"
+    >
+      Size Status</mat-slide-toggle
+    >
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="sizesService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

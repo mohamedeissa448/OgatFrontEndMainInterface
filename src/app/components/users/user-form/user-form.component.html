@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form [formGroup]="userService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="User Name*" formControlName="User_Name" />
+      <mat-error>Please enter a User Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field  class="form-field">
+      <input matInput placeholder="User Display Name*" formControlName="User_DisplayName" />
+      <mat-error>Please enter a User Display Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field  class="form-field">
+        <input matInput placeholder="User Password*" formControlName="User_Password" />
+        <mat-error>Please enter a User Password</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+  
+    
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="userService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

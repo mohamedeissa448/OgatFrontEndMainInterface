@@ -1,0 +1,6 @@
+node_modules
+dist
+.DS_Store
+dist.zip
+src/.htaccess
+src/app/app-config.ts

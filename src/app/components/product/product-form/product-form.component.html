@@ -1,0 +1,145 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form [formGroup]="ProductService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Product Name*" formControlName="Product_Name" />
+      <mat-error>Please enter a Product  Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input matInput placeholder="Product Identifier*" formControlName="Product_Identifier" />
+      <mat-error>Please enter a Product  Identifier</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    
+    <mat-form-field  class="form-field">
+      <mat-select multiple formControlName="Product_Categories" placeholder="Select categories">
+        <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory._id">
+          {{productCategory.Category_Name}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Please enter a Product Category</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field>
+      <mat-label>Material</mat-label>
+      <mat-select formControlName="Product_Material">
+        <mat-option
+              *ngFor="let material of materials"
+              [value]="material._id"
+        >
+              {{ material.ProductMaterial_Name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field  class="form-field">
+      <mat-select multiple formControlName="Product_Size_Variants" placeholder="Select Size Variants">
+        <mat-option *ngFor="let size of sizeVariants" [value]="size._id">
+          {{ size.Size_Name }}
+        </mat-option>
+      </mat-select>
+      <mat-error>Please enter a size variant</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field  class="form-field">
+      <mat-select #cc (selectionChange)="ff()" multiple formControlName="Product_Color_Variants" placeholder="Select Color Variants">
+        <mat-option *ngFor="let color of colorVariants" [value]="color._id" [style.background-color]="color.Color_HexaDecimalBasedValue">
+          {{ color.Color_Name }} 
+        </mat-option>
+      </mat-select>
+      <mat-error>Please enter a size variant</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <div *ngFor="let colorChosed of chosedColors">
+      {{ colorChosed.Color_Name}} <span class="link"(click)="showImages(colorChosed.Color_Name,colorChosed._id)">Click here to choose images:</span>
+    </div>
+    <mat-divider></mat-divider>
+    <span class="default"(click)="chooseDefaultImages()">Click here to choose Default Images:</span><br>
+    <mat-form-field>
+      <mat-label>Main Unit</mat-label>
+      <mat-select  formControlName="Product_MainUnit">
+        <mat-option
+              *ngFor="let unit of productUnits"
+              [value]="unit._id"
+        >
+              {{ unit.ProductUnit_Name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field>
+      <mat-label>Middle Unit</mat-label>
+      <mat-select  formControlName="Product_MiddleUnit">
+        <mat-option
+              *ngFor="let unit of productUnits"
+              [value]="unit._id"
+        >
+              {{ unit.ProductUnit_Name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field>
+      <mat-label>Small Unit</mat-label>
+      <mat-select  formControlName="Product_SmallUnit">
+        <mat-option
+              *ngFor="let unit of productUnits"
+              [value]="unit._id"
+        >
+              {{ unit.ProductUnit_Name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field>
+      <input type="number" matInput placeholder="Product_MiddleUnitCountInMainUnit*" formControlName="Product_MiddleUnitCountInMainUnit" />
+      <mat-error>Please enter a Product MiddleUnitCountInMainUnit</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field>
+      <input type="number" matInput placeholder="Product_SmallUnitCountInMiddleUnit*" formControlName="Product_SmallUnitCountInMiddleUnit" />
+      <mat-error>Please enter a Product SmallUnitCountInMiddleUnit</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field>
+      <input type="number" matInput placeholder="Product_SellingPrice*" formControlName="Product_SellingPrice" />
+      <mat-error>Please enter a Product SellingPrice</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field>
+      <input type="number" matInput placeholder="Product_MinStocklimit*" formControlName="Product_MinStocklimit" />
+      <mat-error>Please enter a Product MinStocklimit</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="Product_IsActive"
+    >
+      Product Status</mat-slide-toggle
+    >
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="ProductService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form [formGroup]="paymentMethodsService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Payment Method Name*" formControlName="PaymentMethod_Name" />
+      <mat-error>Please enter a payment method Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Description"
+        formControlName="PaymentMethod_Description"
+      />
+      <mat-error>Please enter a description</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="PaymentMethod_IsActive"
+    >
+    Payment Method Status</mat-slide-toggle
+    >
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="paymentMethodsService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

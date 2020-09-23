@@ -1,0 +1,37 @@
+.ogt-report-intable-product-name{
+  font-size: 18px;
+  font-weight: bold;
+}
+.ogt-main-item-in-reportgrid{
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #ccc;
+  margin-top: 15px;
+}
+.ogt-report-intable-product-code {
+  font-style: italic;
+  font-size: 12px;
+  color: #b5b4b4;
+  margin-left: 10px;
+}
+.ogt-sub-item-in-reportgrid{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.ogt-sub-item-in-reportgrid .col-3, .ogt-size-cell{
+  border-width: 1px;
+  border-bottom-style: dashed;
+  border-color: #e4e4e4;
+}
+.ogt-sub-item-in-reportgrid:last-child .ogt-size-cell, .ogt-sub-item-in-reportgrid:last-child .col-3{
+  border-bottom: none;
+}
+.ogt-color-indicator {
+  width: 52px;
+  height: 18px;
+  display: inline-flex;
+  margin-right: 5px;
+  border-radius: 10px;
+  position: relative;
+  top: 4px;
+}

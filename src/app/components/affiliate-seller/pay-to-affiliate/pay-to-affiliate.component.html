@@ -1,0 +1,90 @@
+<mat-toolbar>
+    <div class="mat-toolbar-tools">
+        <h3 class="center-text">Payment List For {{AffiliateSeller_Name}}</h3>
+    </div>
+  </mat-toolbar>
+<mat-card class="padded-content-page" >
+    <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+        <!--start inputs-->
+        <form #f="ngForm" (ngSubmit)="onAdd(f)">
+            <div class="your-class">
+                <mat-label>Choose a date*</mat-label>
+                <input matInput [matDatepicker]="picker" name="Payment_Date" [(ngModel)]="Payment_Date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <input name="Payment_PaidAmount" [(ngModel)]="Payment_PaidAmount" type="number" placeholder="Payment_PaidAmount:"required /> 
+                    <mat-select [(ngModel)]="Payment_PaidMethod" name="Payment_PaidMethod" placeholder="method">
+                      <mat-option *ngFor="let method of paymentMethods" [value]="method">
+                        {{method.PaymentMethod_Name}}
+                      </mat-option>
+                    </mat-select>
+                <input name="Payment_PaymentRefranceNumber" [(ngModel)]="Payment_PaymentRefranceNumber" id="Email" type="text" placeholder="Refrance Number:" required/> 
+                <input name="Payment_PaymentExtraDetails" [(ngModel)]="Payment_PaymentExtraDetails" id="Payment_PaymentExtraDetails" type="text" placeholder="Extra Detail:" style="width: 500px;" required/> 
+
+                <mat-dialog-actions  class="add-button">
+                    <button
+                    mat-raised-button
+                    mat-primary
+                    type="submit"
+                    [disabled]="f.form.invalid"
+                    >
+                    ADD
+                    </button>
+                </mat-dialog-actions>
+
+            </div>
+        </form>    
+        <!-- end inputs -->
+        <!--start table-->
+        <table>
+	
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Reference Number</th>
+                <th>Extra Details</th>
+                <th>Accountant Name</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr  *ngFor="let payment of AffiliateSeller_PaymentLog">
+                <td>{{ payment.Payment_Date | date}}</td>
+                <td>{{ payment.Payment_PaidAmount }}</td>
+                <td>{{ payment.Payment_PaidMethod.PaymentMethod_Name }}</td>
+                <td>{{ payment.Payment_PaymentRefranceNumber }}</td>
+                <td>{{ payment.Payment_PaymentExtraDetails }}</td>
+                <td>{{ payment.Payment_PaidByUser.User_DisplayName }}</td>
+
+                <td> 
+                    <span class="material-icons deleteIcon"(click)="deletePayment(payment)">
+                    delete
+                    </span>
+                </td>
+              </tr>
+              <br>
+              
+          </tbody>
+          <caption>Contacts</caption>
+        </table>
+        <!-- end table-->
+        
+    </div>
+    <mat-divider class="rxp-margin-top-larg"></mat-divider>
+    
+</mat-card>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="button"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+
+

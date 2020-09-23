@@ -1,0 +1,68 @@
+<mat-toolbar color="secondary" style="margin-bottom: 5px;">
+
+    <h2 mat-dialog-title>{{ title }}</h2>
+  
+  </mat-toolbar>
+  <form >
+    <mat-dialog-content>
+      
+      <!--start decreasing products-->
+      <mat-card class="padded-content-page" >
+          <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+    
+            <mat-form-field  class="m-right"  >
+                <mat-select  [(ngModel)]="Order_PaymentBy" name="Order_PaymentBy" placeholder="payment method " >
+                    <mat-option *ngFor="let method of paymentMethods" [value]="method._id">
+                    {{ method.PaymentMethod_Name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Please select a method</mat-error>
+            </mat-form-field>
+           
+         
+
+              <div >
+              <!--start table-->
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Size Variant</th>
+                    <th>Color Variant</th>
+                    <th>Quantity</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr  *ngFor="let orderedProduct of Original_Order_Products">
+                    <td>{{ orderedProduct.Product.Product_Name }}</td>
+                    <td>{{ orderedProduct.Size_Variant.Size_Name }}</td>
+                    <td>{{ orderedProduct.Color_Variant.Color_Name }}</td>
+                    <td>{{ orderedProduct.Quantity }}</td>
+                  </tr>
+                  <br>
+                  
+              </tbody>
+            </table>
+            <!-- end table-->
+          </div>
+
+              
+        </div>
+          <mat-divider class="rxp-margin-top-larg"></mat-divider>
+          
+      </mat-card>
+    </mat-dialog-content>
+  
+    <mat-dialog-actions>
+      <button
+      class="submit"
+        mat-raised-button
+        mat-secondary
+        type="submit"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </form>
+  

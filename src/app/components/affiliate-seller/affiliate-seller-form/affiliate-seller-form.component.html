@@ -1,0 +1,216 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form [formGroup]="affiliateSellerService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content  class="d-flex p-2">
+    <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="AffiliateSeller_Type">
+          <mat-option *ngFor="let type of AffiliateSeller_Types" [value]="type.name">
+            {{type.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Affiliate Seller Name*" formControlName="AffiliateSeller_Name" />
+      <mat-error>Please enter a AffiliateSeller Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Affiliate Seller Display Name" formControlName="AffiliateSeller_DisplayName" />
+      <mat-error>Please enter a Affiliate Seller Display Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    
+    <mat-form-field class="form-field" *ngIf="affiliateSellerService.form.get('AffiliateSeller_Type').value == 'Personal'">
+        <input matInput placeholder="AffiliateSeller_NationalID*" formControlName="AffiliateSeller_NationalID" />
+        <mat-error>Please enter a AffiliateSeller_NationalID</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+      <mat-form-field class="form-field" *ngIf="affiliateSellerService.form.get('AffiliateSeller_Type').value == 'Company'">
+        <input  matInput placeholder="AffiliateSeller_CommercialRegisterID*" formControlName="AffiliateSeller_CommercialRegisterID" />
+        <mat-error>Please enter a AffiliateSeller_CommercialRegisterID</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+      <mat-form-field class="form-field" *ngIf="affiliateSellerService.form.get('AffiliateSeller_Type').value == 'Company'">
+        <input matInput placeholder="AffiliateSeller_TaxID*" formControlName="AffiliateSeller_TaxID" />
+        <mat-error>Please enter a AffiliateSeller_TaxID</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Email*"
+        formControlName="AffiliateSeller_Email"
+      />
+      <mat-error>Please enter a AffiliateSeller Email</mat-error>
+      <br>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+        <input
+          matInput
+          placeholder="Password*"
+          formControlName="AffiliateSeller_Password"
+        />
+        <mat-error>Please enter a AffiliateSeller Password</mat-error>
+        <br>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Phone*"
+        formControlName="AffiliateSeller_Phone"
+      />
+      <mat-error>Please enter a AffiliateSeller Phone</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+        <input
+          matInput
+          placeholder="Address*"
+          formControlName="AffiliateSeller_Address"
+        />
+        <mat-error>Please enter a AffiliateSeller Address</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+      <mat-form-field class="form-field">
+        <input
+          matInput
+          placeholder="City*"
+          formControlName="AffiliateSeller_City"
+        />
+        <mat-error>Please enter a City </mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+      <mat-form-field appearance="fill"class="form-field">
+        <mat-label>Country</mat-label>
+        <mat-select formControlName="AffiliateSeller_Country">
+          <mat-option *ngFor="let country of countries" [value]="country._id">
+            {{country.Country_Name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Website Url*"
+        formControlName="AffiliateSeller_WebsiteURL"
+      />
+      <mat-error>Please enter a AffiliateSeller Website Url</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="FaceBookPageURL*"
+        formControlName="AffiliateSeller_FaceBookPageURL"
+      />
+      <mat-error>Please enter a AffiliateSeller FaceBookPageURL</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field appearance="fill" class="form-field">
+        <mat-label>AffiliateSeller Rate</mat-label>
+        <mat-slider matInput min="1" max="10" formControlName="AffiliateSeller_Rate" 
+          aria-label="Rating Slider" id="rate-slider" class="md-primary">
+       </mat-slider>
+       <textarea matInput hidden></textarea>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Class</mat-label>
+        <mat-select formControlName="AffiliateSeller_Class_Code">
+          <mat-option *ngFor="let class of classes" [value]="class._id">
+            {{class.Class_Name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider></mat-divider>  
+    
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="AffiliateSeller_RevenuePercentage*"
+        formControlName="AffiliateSeller_RevenuePercentage"
+        type="number"
+      />
+      <mat-error>Please enter a AffiliateSeller_RevenuePercentage</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="AffiliateSeller_Bank_Name*"
+        formControlName="AffiliateSeller_Bank_Name"
+      />
+      <mat-error>Please enter a AffiliateSeller_Bank_Name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="AffiliateSeller_BankAccountNumber*"
+        formControlName="AffiliateSeller_BankAccountNumber"
+      />
+      <mat-error>Please enter a AffiliateSeller_BankAccountNumber</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+      <input
+        matInput
+        placeholder="Bank Account Holder Name*"
+        formControlName="AffiliateSeller_BankAccountHolderName"
+      />
+      <mat-error>Please enter a BankAccountHolderName</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+
+    <mat-form-field class="form-field">
+        <input
+          matInput
+          placeholder="Bank IBAN Number*"
+          formControlName="AffiliateSeller_BankIBANNumber"
+        />
+        <mat-error>Please enter a Bank IBAN Number</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+    
+
+    <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="AffiliateSeller_IsActive"
+    >
+    AffiliateSeller Status</mat-slide-toggle
+    >
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="affiliateSellerService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,159 @@
+<mat-toolbar
+  ><h2 mat-dialog-title>{{ title }}</h2>
+  <span class="fill-remainig-space"></span>
+  <button
+    class="btn-dialog-close"
+    mat-stroked-button
+    (click)="onClose()"
+    tabindex="-1"
+  >
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-toolbar>
+<form [formGroup]="MediaService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Media_Type*" formControlName="Media_Type" />
+      <mat-error>Please provide a type</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input matInput placeholder="Name*" formControlName="Media_Title" />
+      <mat-error>Please provide a name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input matInput placeholder="MetaTags*" formControlName="Media_MetaTags" />
+      <mat-error>Please provide MetaTags</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input matInput placeholder="AlternativeText*" formControlName="Media_AlternativeText" />
+      <mat-error>Please provide AlternativeText</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input matInput placeholder="Description*" formControlName="Media_Describtion" />
+      <mat-error>Please provide a desciption </mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <!--     xlarge image-->
+    <img
+      *ngIf="title == 'Edit A Media'"
+      class="serviceImage"
+      [src]="'http://localhost:3000/images/' + xLargeImageUrl"
+    />
+    <br />
+    <div class="custom-file">
+      <input
+        #image
+        required
+        type="file"
+        class="custom-file-input"
+        id="file1"
+        name="image"
+        accept="image/x-png,image/gif,image/jpeg,image/jpg"
+        (change)="handleXlargeImageFileInput($event.target.files)"
+      />
+      <label class="custom-file-label" for="customFile">
+        <p *ngIf="!this.xLargeImageToUpload">choose a FHD Image w: 1920 x h: 1080:</p>
+        <p *ngIf="this.xLargeImageToUpload">
+          Image chosed is: {{ this.xLargeImageToUpload.name }}
+        </p>
+      </label>
+    </div>
+    <!--     large image-->
+    <img
+      *ngIf="title == 'Edit A Media'"
+      class="serviceImage"
+      [src]="'http://localhost:3000/images/' + largeImageUrl"
+    />
+    <br />
+    <div class="custom-file">
+      <input
+        #image
+        required
+        type="file"
+        class="custom-file-input"
+        id="file2"
+        name="image"
+        accept="image/x-png,image/gif,image/jpeg,image/jpg"
+        (change)="handleLargeImageFileInput($event.target.files)"
+      />
+      <label class="custom-file-label" for="customFile">
+        <p *ngIf="!this.largeImageToUpload">choose a HD Image w: 1280 x h: 720:</p>
+        <p *ngIf="this.largeImageToUpload">
+          Image chosed is: {{ this.largeImageToUpload.name }}
+        </p>
+      </label>
+    </div>
+    <!--     mediium image-->
+    <img
+      *ngIf="title == 'Edit A Media'"
+      class="serviceImage"
+      [src]="'http://localhost:3000/images/' + mediumImageUrl"
+    />
+    <br />
+    <div class="custom-file">
+      <input
+        #image
+        required
+        type="file"
+        class="custom-file-input"
+        id="file3"
+        name="image"
+        accept="image/x-png,image/gif,image/jpeg,image/jpg"
+        (change)="handleMediumImageFileInput($event.target.files)"
+      />
+      <label class="custom-file-label" for="customFile">
+        <p *ngIf="!this.mediumImageToUpload">choose a Image w: 720 x h: 480:</p>
+        <p *ngIf="this.mediumImageToUpload">
+          Image chosed is: {{ this.mediumImageToUpload.name }}
+        </p>
+      </label>
+    </div>
+    <!--     small image-->
+    <img
+      *ngIf="title == 'Edit A Media'"
+      class="serviceImage"
+      [src]="'http://localhost:3000/images/' + smallImageUrl"
+    />
+    <br />
+    <div class="custom-file">
+      <input
+        #image
+        required
+        type="file"
+        class="custom-file-input"
+        id="file4"
+        name="image"
+        accept="image/x-png,image/gif,image/jpeg,image/jpg"
+        (change)="handleSmallImageFileInput($event.target.files)"
+      />
+      <label class="custom-file-label" for="customFile">
+        <p *ngIf="!this.smallImageToUpload">choose a Image w: 300 x h: 300:</p>
+        <p *ngIf="this.smallImageToUpload">
+          Image chosed is: {{ this.smallImageToUpload.name }}
+        </p>
+      </label>
+    </div>
+  </mat-dialog-content>
+  <p *ngIf="showErrorMSg == true" class="alert alert-danger">
+    You should choose an image
+  </p>
+  
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="
+        MediaService.form.invalid && !xLargeImageToUpload && !mediumImageToUpload && !largeImageToUpload
+        && !smallImageToUpload
+      "
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

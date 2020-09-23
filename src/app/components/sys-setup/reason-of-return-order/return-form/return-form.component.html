@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form [formGroup]="reasonService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Reason Of Return*" formControlName="ReasonOfReturn_Name" />
+      <mat-error>Please enter a Reason Of Return</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Description"
+        formControlName="ReasonOfReturn_Description"
+      />
+      <mat-error>Please enter a Description</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="ReasonOfReturn_IsActive"
+    >
+      Reason Status</mat-slide-toggle
+    >
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="reasonService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

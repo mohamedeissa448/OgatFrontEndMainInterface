@@ -1,0 +1,10 @@
+.media-icon{
+    margin-right: 0.7em;
+}
+.user-account .list-unstyled li{
+    text-align: center;
+}
+.rxp-side-tabs-content .tab-pane{
+    height: calc(100vh - 290px);
+    overflow-y: scroll;
+}

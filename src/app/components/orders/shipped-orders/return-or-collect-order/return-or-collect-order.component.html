@@ -1,0 +1,118 @@
+<mat-toolbar color="secondary" style="margin-bottom: 5px;">
+
+    <h2 mat-dialog-title>{{ title }}</h2>
+  
+  </mat-toolbar>
+  <form >
+    <mat-dialog-content>
+      
+      <!--start decreasing products-->
+      <mat-card class="padded-content-page" >
+          <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+              
+            <mat-form-field  class="m-right">
+            <mat-select  [(ngModel)]="Order_Status" name="Order_Status" placeholder="Order Status " >
+                <mat-option *ngFor="let status of allStatus" [value]="status">
+                {{ status }}
+                </mat-option>
+            </mat-select>
+            <mat-error>Please select a status</mat-error>
+            </mat-form-field>
+
+            <mat-form-field  class="m-right" *ngIf="Order_Status == 'Collected'" style="margin-left: 22em;">
+                <mat-select  [(ngModel)]="Order_CustomerPaymentStatus" name="Order_CustomerPaymentStatus" placeholder="payment method " >
+                    <mat-option *ngFor="let method of paymentMethods" [value]="method">
+                    {{ method }}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Please select a method</mat-error>
+            </mat-form-field>
+           
+          <!--start return details -->
+      
+              <mat-form-field appearance="fill"class="form-field" *ngIf="Order_Status == 'Returned'" style="margin-left: 22em;">
+                <mat-label>Choose a date*</mat-label>
+                <input matInput [matDatepicker]="pickerForReturn" name="Return_Date" [(ngModel)]='Return_Date' >
+                <mat-datepicker-toggle matSuffix [for]="pickerForReturn"></mat-datepicker-toggle>
+                <mat-datepicker #pickerForReturn></mat-datepicker>
+              </mat-form-field>
+  
+             <mat-form-field  class="m-right" *ngIf="Order_Status == 'Returned'" >
+                <mat-select  [(ngModel)]="Return_ReasonOfReturn" name="Return_ReasonOfReturn" placeholder="Return reason" >
+                  <mat-option *ngFor="let reason of returnReasons" [value]="reason._id">
+                  {{ reason.ReasonOfReturn_Name }}
+                  </mat-option>
+               </mat-select>
+                <mat-error>Please select a reason</mat-error>
+              </mat-form-field>
+  
+              <mat-form-field class="form-field" *ngIf="Order_Status == 'Returned'"style="margin-left: 22em;">
+              <input
+                matInput
+                placeholder="Note*"
+                [(ngModel)]="Return_Note"
+                name="Return_Note"
+                
+             />
+              <mat-error>Please enter a note </mat-error>
+              </mat-form-field>
+
+            <mat-form-field class="form-field" *ngIf="Order_Status == 'Returned'">
+              <input
+                matInput
+                placeholder="Return Shipping Company Referrence Number*"
+                [(ngModel)]="Return_ShippingCompanyRefNumber"
+                name="Return_ShippingCompanyRefNumber"
+                
+             />
+              <mat-error>Please enter a note </mat-error>
+              </mat-form-field>
+
+              <div *ngIf="Order_Status == 'Returned'">
+              <!--start table-->
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Size Variant</th>
+                    <th>Color Variant</th>
+                    <th>Quantity</th>
+                    <th>Returned Quantities</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr  *ngFor="let orderedProduct of Original_Order_Products">
+                    <td>{{ orderedProduct.Product.Product_Name }}</td>
+                    <td>{{ orderedProduct.Size_Variant.Size_Name }}</td>
+                    <td>{{ orderedProduct.Color_Variant.Color_Name }}</td>
+                    <td>{{ orderedProduct.Quantity }}</td>
+                    <td><input name="x" [(ngModel)]="orderedProduct.returnedQuantity"></td>
+                  </tr>
+                  <br>
+                  
+              </tbody>
+            </table>
+            <!-- end table-->
+          </div>
+
+          <!--end return details -->
+              
+        </div>
+          <mat-divider class="rxp-margin-top-larg"></mat-divider>
+          
+      </mat-card>
+    </mat-dialog-content>
+  
+    <mat-dialog-actions>
+      <button
+      class="submit"
+        mat-raised-button
+        mat-secondary
+        type="submit"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </form>
+  

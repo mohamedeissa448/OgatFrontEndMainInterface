@@ -1,0 +1,14 @@
+.col-sm-4 {
+    width: 33.3%;
+    height: 37mm;
+    min-width: 70mm !important;
+    min-height: 37mm !important;
+    padding: 0 !important;
+}
+svg{
+    height: 78px !important;
+    width: 260px !important;
+}
+rect {
+    height: 70px;
+}

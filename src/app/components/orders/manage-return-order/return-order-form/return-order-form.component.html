@@ -1,0 +1,122 @@
+<mat-toolbar color="secondary" style="margin-bottom: 5px;">
+
+    <h2 mat-dialog-title>{{ title }}</h2>
+  
+  </mat-toolbar>
+  <form >
+    <mat-dialog-content>
+      
+      <!--start decreasing products-->
+      <mat-card class="padded-content-page" >
+          <div layout="row" class="rxp-margin-top-medium hcm-contact-add-form" layout-xs="column">
+              
+          <!--start return details -->
+      
+              <mat-form-field appearance="fill"class="form-field"  >
+                <mat-label>Choose a date*</mat-label>
+                <input matInput [matDatepicker]="pickerForReturn" name="Return_Date" [(ngModel)]='Return_Date' >
+                <mat-datepicker-toggle matSuffix [for]="pickerForReturn"></mat-datepicker-toggle>
+                <mat-datepicker #pickerForReturn></mat-datepicker>
+              </mat-form-field>
+  
+             <mat-form-field  class="m-right"  style="margin-left: 22em;">
+                <mat-select  [(ngModel)]="Return_ReasonOfReturn" name="Return_ReasonOfReturn" placeholder="Return reason" >
+                  <mat-option *ngFor="let reason of returnReasons" [value]="reason._id">
+                  {{ reason.ReasonOfReturn_Name }}
+                  </mat-option>
+               </mat-select>
+                <mat-error>Please select a reason</mat-error>
+              </mat-form-field>
+  
+              <mat-form-field class="form-field" >
+              <input
+                matInput
+                placeholder="Note*"
+                [(ngModel)]="Return_Note"
+                name="Return_Note"
+                
+             />
+              <mat-error>Please enter a note </mat-error>
+              </mat-form-field>
+
+            <mat-form-field class="form-field" style="margin-left: 22em;">
+              <input
+                matInput
+                placeholder="Return Shipping Company Referrence Number*"
+                [(ngModel)]="Return_ShippingCompanyRefNumber"
+                name="Return_ShippingCompanyRefNumber"
+                
+             />
+              <mat-error>Please enter a note </mat-error>
+              </mat-form-field>
+
+              <div >
+              <!--start table-->
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Size Variant</th>
+                    <th>Color Variant</th>
+                    <th>Quantity</th>
+                    <th>isReturned</th>
+                    <th>Returned Quantities</th>
+                    <th>Return Product ?</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr  *ngFor="let orderedProduct of Original_Order_Products">
+                    <td>{{ orderedProduct.Product.Product_Name }}</td>
+                    <td>{{ orderedProduct.Size_Variant.Size_Name }}</td>
+                    <td>{{ orderedProduct.Color_Variant.Color_Name }}</td>
+                    <td>{{ orderedProduct.Quantity }}</td>
+                    <td>
+                        <input
+                            type="checkbox"
+                            disabled="disabled"
+                            [checked]="orderedProduct.isReturned == true ? true : false"
+                        />
+                    </td>
+                    <td><input name="x" [(ngModel)]="orderedProduct.returnedQuantity"disabled></td>
+                    <td>
+                        <button
+                            class="submit"
+                            mat-raised-button
+                            mat-secondary
+                            type="submit"
+                            (click)="onSubmit(orderedProduct)"
+                            *ngIf="!orderedProduct.isReturned"
+                        >
+                          Submit
+                        </button>
+                        <p *ngIf="orderedProduct.isReturned">Already returned</p>
+                    </td>
+                  </tr>
+                  <br>
+                  
+              </tbody>
+            </table>
+            <!-- end table-->
+          </div>
+
+          <!--end return details -->
+              
+        </div>
+          <mat-divider class="rxp-margin-top-larg"></mat-divider>
+          
+      </mat-card>
+    </mat-dialog-content>
+  <!--
+    <mat-dialog-actions>
+      <button
+      class="submit"
+        mat-raised-button
+        mat-secondary
+        type="submit"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+    </mat-dialog-actions>-->
+  </form>
+  

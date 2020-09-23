@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+
+<form [formGroup]="ColorVariantService.form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Name*" formControlName="Color_Name" />
+      <mat-error>Please provide a name</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input matInput placeholder="Three Letters as Identifier*" formControlName="Color_ThreeLettersIdentifier" />
+      <mat-error>Please provide an Identifier</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    
+    <mat-form-field>
+      <input matInput placeholder="Description" formControlName="Color_Description" />
+      <mat-error>Please provide a desciption for the color</mat-error>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input matInput placeholder="Pick a color*" type="text" formControlName="Color_HexaDecimalBasedValue" [(colorPicker)]="Color_HexaDecimalBasedValue"[style.background]="Color_HexaDecimalBasedValue" [value]="Color_HexaDecimalBasedValue" class="showedColor">
+      <mat-error>Please choose a color</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <p *ngIf="showErrorMSg == true" class="alert alert-danger">
+    You should choose an image
+  </p>
+  <mat-slide-toggle
+      *ngIf="title.includes('Edit')"
+      matInput
+      formControlName="Color_IsActive"
+    >
+      Color Status</mat-slide-toggle
+    >
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="
+        ColorVariantService.form.invalid && !this.imageToUpload
+      "
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+</form>

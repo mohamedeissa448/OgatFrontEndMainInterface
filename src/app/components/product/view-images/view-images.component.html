@@ -1,0 +1,27 @@
+xx{{this.viewImagesService.form.value | json}}
+<form [formGroup]="viewImagesService.form" (ngSubmit)="onSubmit()">
+<mat-form-field>
+    <mat-label *ngIf="Color_Name != ''">Select Images For Color {{ Color_Name }}</mat-label>
+    <mat-label *ngIf="Color_Name == ''">Select Default Images</mat-label>
+    <mat-select multiple formControlName="images">
+      <mat-option *ngFor="let image of medias" [value]="image._id">
+        <img [src]="serverURL +'/images/'+image.Media_SamllImageUrl"> {{image.Media_Title}}
+      </mat-option>
+    </mat-select>
+   
+  </mat-form-field>
+
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onClose()">Close</button>
+    <button
+      mat-raised-button
+      mat-primary
+      type="submit"
+      [disabled]="viewImagesService.form.invalid"
+    >
+      Submit
+    </button>
+  </mat-dialog-actions>
+
+</form>

@@ -1,0 +1,18 @@
+<button type="button" (click)="close()" tabindex="-1" class="btn rxp-close-dialog-btt mr-1" title="Close">
+    <span class="sr-only">Close</span> 
+    <i class="icon-close"></i>
+</button>
+<h2 mat-dialog-title>{{DialogTitle}}</h2>
+<button styleSheetFile="assets/css/barcode.css"
+  printTitle="MyTitle" printSectionId="print-section" ngxPrint>print</button> 
+<div id="print-section">
+    <div class="row">
+        <div class="col-sm-4" *ngFor="let barcode of BarcodePrintingArray">
+            <span class="ogt-barcode-name">{{ barcode.Name }}</span>
+            <ngx-barcode class="ogt-barcode" [bc-value]="barcode.Barcode" [bc-format]="'CODE128'" [bc-display-value]="true"></ngx-barcode>
+            <span class="ogt-barcode-ogat">{{ barcode.Ogat }}</span>
+            <span class="ogt-barcode-color">{{ barcode.Color }}</span>
+            <span class="ogt-barcode-color">{{ barcode.Size }}</span>
+        </div>
+    </div>
+</div>

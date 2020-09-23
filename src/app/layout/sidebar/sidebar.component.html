@@ -1,0 +1,416 @@
+<div id="left-sidebar" class="sidebar" *ngIf="sidebarVisible">
+    <div class="sidebar-scroll">
+        <div class="user-account">
+            <img src="assets/images/user.png" class="rounded-circle user-photo" alt="User Profile Picture">
+            <div class="dropdown" ngbDropdown>
+                <span>Welcome,</span>
+                <a href="javascript:void(0);" class="dropdown-toggle user-name"
+                    ngbDropdownToggle><strong>{{authService.currentUser.User_DisplayName}}</strong></a>
+                <ul class="dropdown-menu dropdown-menu-right account" ngbDropdownMenu>
+                    <li class="ogt-change-pass-title">
+                        <a [routerLink]="['/authentication/change-password']">
+                            <i class="icon-key"></i>Change Password
+                        </a>
+                    </li>
+                    <li><a [routerLink]="['/admin/app/app-inbox']"><i class="icon-envelope-open"></i>Messages</a></li>
+                    <li><a href="javascript:void(0);"><i class="icon-settings"></i>Settings</a></li>
+                    <li class="divider"></li>
+                    <li><a [routerLink]="['/authentication/page-login']"><i class="icon-power"></i>Logout</a></li>
+                </ul>
+            </div>
+            <hr>
+            <ul class="row list-unstyled">
+                <li class="col-4">
+                    <small>My Order</small>
+                    <h6>10</h6>
+                </li>
+                <li class="col-4">
+                    <small>Order</small>
+                    <h6>45</h6>
+                </li>
+                <li class="col-4">
+                    <small>Shipments</small>
+                    <h6>18</h6>
+                </li>
+            </ul>
+        </div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active':navTab == 'menu'}" 
+                    (click)="changeNavTab('menu')" title="Menu">
+                    <i class="icon-grid"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active':navTab == 'setting'}" 
+                    (click)="changeNavTab('setting')" title="Setting">
+                    <i class="icon-wrench"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active':navTab == 'report'}"
+                    (click)="changeNavTab('report')" title="Reports">
+                    <i class="icon-bar-chart"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [ngClass]="{'active':navTab == 'style'}" 
+                    (click)="changeNavTab('style')" title="Style">
+                    <i class="icon-puzzle"></i>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content p-l-0 p-r-0 rxp-side-tabs-content">
+            <div class="tab-pane" id="menu" [ngClass]="{'active':navTab == 'menu' || !navTab}">
+                <nav id="left-sidebar-nav" class="sidebar-nav">
+                    <ul id="main-menu" class="metismenu">
+                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'dashboard' }">
+                            <a [routerLink]="['/dashboard/index']"><i class="icon-home"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li *ngIf="this.authService.currentUser.User_Permissions.includes('AccessOrderModule')"
+                            [ngClass]="{ active: currentActiveMenu == 'orders' }">
+                            <a class="has-arrow" (click)="activeInactiveMenu('orders')">
+                                <i class="icon-basket-loaded"></i>
+                                <span>Orders</span>
+                            </a>
+                            <ul *ngIf="currentActiveMenu == 'orders'">
+                                <li *ngIf="this.authService.currentUser.User_Permissions.includes('canAccessMyOrders')"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/orders/my-orders']">
+                                        My Orders
+                                    </a>
+                                </li>
+                                <!-- Return Order 
+                                     show if user have the permission 
+                                     do not show any order in the list 
+                                     must have a search bar to search for order.  
+                                     search can be done by order code   
+                                     search can be done shipping waybill 
+                                     after serach, user can return order only. nothing else. 
+                                     User can return any order whatever created by him or not
+                                     User can return only the same quantity of the product of the order. can not change the quantity
+                                     if product is returned, the stats of the product should also be updated (see ProductDecreaseSchema in order model) 
+                                     user can not return product more than one time. so product with returned status should not be retruned.
+                                     after returning the order:
+                                     1- check if the product is on affilate seller returned orders
+                                        if not found in affilate seller returned orders, it should be add
+                                     2- change the total amount of the order by deducting the price of the returned product
+                                     3- the Order_AffiliateSellerRevenueAmount should be deducted by the product affilate revenue after calculate the deducted AffiliateSellerRevenueAmount (see function deleteProductInOrder in order-contoller.js)
+                                     4- Insert item in AffiliateSeller_FinancialTransactions array by with negative sign with the product affilate revenue after calculate the deducted AffiliateSellerRevenueAmount
+                                -->
+                                <li *ngIf="currentActiveMenu == 'orders'">
+                                    <li *ngIf="this.authService.currentUser.User_Permissions.includes('canReturnOrders')"
+                                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/orders/manage-return-order']">
+                                        Return Order
+                                    </a>
+                                </li>
+                                <!-- Assigned Orders 
+                                     show if user have the permission 
+                                     Show only order with status "Assigned"  
+                                     must have a search bar to search for order.   
+                                     search can be done by : customer name and customer Mobile and order code   
+                                     after serach, user can change the owner of the order only. nothing else. (change the function on the route) 
+                                -->
+                                <li *ngIf="this.authService.currentUser.User_Permissions.includes('canViewAssignedOrders')"
+                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a [routerLink]="['/orders/assigned-orders']"> 
+                                    Assigned Orders
+                                </a>
+                            </li>
+                                
+                                <!-- Cancelled Orders 
+                                    show if user have the permission 
+                                    Show only order with status "Cancelled"  
+                                    must have a search bar to search for order.   
+                                    search can be done by : customer name and customer Mobile and order code   
+                                    after serach, user can change the Status of the order only. nothing else. (change the function on the route) 
+                                    change the status from cancelled to created should do the following :
+                                        1- remove the order form the affilate seller cancelled orders
+                                -->
+                                <li *ngIf="this.authService.currentUser.User_Permissions.includes('canViewCancelledOrders')"
+                                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a [routerLink]="['/orders/cancelled-orders']">
+                                    Cancelled Orders
+                                </a>
+                                </li>
+                                <!-- Distribute Orders 
+                                     show if user have the permission 
+                                     Show only order with status "Created"  
+                                     must have a search bar to search for order.   
+                                     search can be done by : customer name and customer Mobile and order code   
+                                     after serach, user can assign order to other users only, nothing else. 
+                                     user list to assing should be limited to users who have permission (canAccessMyOrders). -->
+                                <li *ngIf="currentActiveMenu == 'orders'">
+                                    <li *ngIf="this.authService.currentUser.User_Permissions.includes('canAssignOrders')"
+                                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/orders/distribute-orders']">
+                                        Distribute Orders
+                                    </a>
+                                </li>
+                                <!-- Collect Orders 
+                                     show if user have the permission 
+                                     Show only order with status "Shipped"  
+                                     must have a search bar to search for order.   
+                                     search can be done by : shipping waybill, customer name and customer Mobile and order code   
+                                     after serach, user can record Payments of the order Only, nothing else.
+                                     After record Payments: 
+                                     1- Insert item in AffiliateSeller_FinancialTransactions array by with Positive sign with the amount of the Order_AffiliateSellerRevenueAmount
+                                     2- order status change to be "Collected" 
+                                 -->
+                                <li *ngIf="currentActiveMenu == 'orders'">
+                                    <li 
+                                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/orders/manage-collect-orders']">
+                                        Collect Order
+                                    </a>
+                                </li>
+                                <li *ngIf="this.authService.currentUser.User_Permissions.includes('canManageAndViewAllOrders')"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/orders/manage-orders']">
+                                        Manage Orders
+                                    </a>
+                                </li>
+                                <li *ngIf="this.authService.currentUser.User_Permissions.includes('canViewMyShippedOrders')"
+                                    routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/orders/user-shipped-orders']">
+                                        My Shipped Orders
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li *ngIf="this.authService.currentUser.User_Permissions.includes('AccessCustomerModule')"
+                            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'customer' }">
+                            <a [routerLink]="['/customer/manage-customer']">
+                                <i class="icon-earphones-alt"></i>
+                                <span>Customers</span>
+                            </a>
+                        </li>
+                        <li *ngIf="this.authService.currentUser.User_Permissions.includes('AccessMediaModule')"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'media' }">
+                            <a [routerLink]="['/media/manage-media']">
+                                <i class="icon-picture"></i>
+                                <span>Media</span>
+                            </a>
+                        </li>
+                        <li [ngClass]="{ active: currentActiveMenu == 'inventory' }"
+                        *ngIf="this.authService.currentUser.User_Permissions.includes('AccessInventoryModule')">
+                            <a class="has-arrow" (click)="activeInactiveMenu('inventory')">
+                                <i class="icon-book-open"></i>
+                                <span>Inventory</span>
+                            </a>
+                            <ul *ngIf="currentActiveMenu == 'inventory'">
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/inventory/supplier-returned-bills']">
+                                        Suppliers Returned bills
+                                    </a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/inventory/supplier-bills']">
+                                        Suppliers bills
+                                    </a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/inventory/increase-inventory']">
+                                        Increase Inventory
+                                    </a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/inventory/decrease-inventory']">
+                                        Decrease Inventory
+                                    </a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/inventory/storage-places']">
+                                        Storage Places
+                                    </a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/inventory/warehousing']">
+                                        Warehousing
+                                    </a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/inventory/print-barcode']">
+                                        Print Barcode
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                    </ul>
+                </nav>
+            </div>
+            <div class="tab-pane" id="setting" [ngClass]="{'active':navTab == 'setting'}">
+                <nav id="left-sidebar-nav" class="sidebar-nav">
+                    <ul id="main-menu" class="metismenu">
+                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'product' }"
+                            *ngIf="this.authService.currentUser.User_Permissions.includes('AccessProductModule')">
+                            <a [routerLink]="['/product/manage-product']">
+                                <i class="icon-social-dropbox"></i>
+                                <span>Products</span>
+                            </a>
+                        </li>
+                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'category' }"
+                            *ngIf="this.authService.currentUser.User_Permissions.includes('AccessProductModule')">
+                            <a [routerLink]="['/category/manage-category']">
+                                <i class="icon-layers"></i>
+                                <span>Categories</span>
+                            </a>
+                        </li>
+                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'affiliate-seller' }"
+                            *ngIf="this.authService.currentUser.User_Permissions.includes('AccessAffilateSellerModule')">
+                            <a [routerLink]="['/affiliate-seller/manage-affiliate-seller']">
+                                <i class="icon-briefcase"></i>
+                                <span>Affiliate Sellers</span>
+                            </a>
+                        </li>
+                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'shipping-company' }"
+                            *ngIf="this.authService.currentUser.User_Permissions.includes('AccessShippingCompaniesModule')">
+                            <a [routerLink]="['/shipping-company/manage-shipping-company']">
+                                <i class="icon-paper-plane"></i>
+                                <span>Shipping Companies</span>
+                            </a>
+                        </li>
+                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'supplier' }"
+                            *ngIf="this.authService.currentUser.User_Permissions.includes('AccessSupplierModule')">
+                            <a [routerLink]="['/supplier/manage-supplier']">
+                                <i class="fa fa-building-o"></i>
+                                <span>Suppliers</span>
+                            </a>
+                        </li>
+                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'supplier' }"
+                            *ngIf="this.authService.currentUser.User_Permissions.includes('AccessSupplierModule')">
+                            <a [routerLink]="['/supplier/supplier-payments']">
+                                <i class="fa fa-building-o"></i>
+                                <span>Suppliers Payments</span>
+                            </a>
+                        </li>
+                        
+                        <li [ngClass]="{ active: currentActiveMenu == 'sys-setup' }" *ngIf="this.authService.currentUser.User_Permissions.includes('AccessSystemSetupModule')">
+                            <a class="has-arrow" (click)="activeInactiveMenu('sys-setup')"><i class="icon-settings"></i>
+                                <span>Setup</span></a>
+                            <ul *ngIf="currentActiveMenu == 'sys-setup'">
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a [routerLink]="['/sys-setup/manage-size-variants']">Size Variants</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                <a [routerLink]="['/sys-setup/manage-product-units']">Product Units</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/sys-setup/manage-color-variants']">Color Variants</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/sys-setup/manage-product-materials']">Product Materials</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/sys-setup/manage-class']">Class</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/sys-setup/manage-country']">Country</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/sys-setup/manage-payment-methods']">Payment Methods</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/sys-setup/manage-ways-of-delivery']">Ways Of Delivey</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/sys-setup/manage-province']">Province</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/sys-setup/manage-return-reasons']">Return Reasons</a>
+                                </li>
+                                <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                    <a [routerLink]="['/sys-setup/manage-cancel-reasons']">Cancel Reasons</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'users' }"
+                            *ngIf="this.authService.currentUser.User_Permissions.includes('AccessUserModule')">
+                            <a [routerLink]="['/users/manage-users']">
+                                <i class="icon-users"></i>
+                                <span>Manage Users</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="tab-pane" id="report" [ngClass]="{'active':navTab == 'report'}">
+                <h6>Reports </h6>
+                <ul class="choose-skin list-unstyled metismenu">
+                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                            [ngClass]="{ active: currentActiveMenu == 'users' }">
+                            <a [routerLink]="['/reports/store-quantities']">
+                                <i class="icon-users"></i>
+                                <span>Store Quantities</span>
+                            </a>
+                        </li>
+                </ul>
+            </div>
+            <div class="tab-pane p-l-15 p-r-15" id="style" [ngClass]="{'active':navTab == 'style'}">
+                <h6>Choose Mode</h6>
+                <ul class="choose-skin list-unstyled">
+                    <li data-theme="white" [ngClass]="{'active':darkClass == ''}" (click)="changeDarkMode('')">
+                        <div class="white"></div>
+                        <span>Light</span>
+                    </li>
+                    <li data-theme="black" [ngClass]="{'active':darkClass == 'full-dark'}"
+                        (click)="changeDarkMode('full-dark')">
+                        <div class="black"></div>
+                        <span>Dark</span>
+                    </li>
+                </ul>
+                <hr>
+                <h6>Choose Skin</h6>
+                <ul class="choose-skin list-unstyled">
+                    <li data-theme="purple" [ngClass]="{'active':themeClass == 'theme-purple'}"
+                        (click)="changeTheme('theme-purple')">
+                        <div class="purple"></div>
+                        <span>Purple</span>
+                    </li>
+                    <li data-theme="blue" [ngClass]="{'active':themeClass == 'theme-blue'}"
+                        (click)="changeTheme('theme-blue')">
+                        <div class="blue"></div>
+                        <span>Blue</span>
+                    </li>
+                    <li data-theme="cyan" [ngClass]="{'active':themeClass == 'theme-cyan'}"
+                        (click)="changeTheme('theme-cyan')">
+                        <div class="cyan"></div>
+                        <span>Cyan</span>
+                    </li>
+                    <li data-theme="green" [ngClass]="{'active':themeClass == 'theme-green'}"
+                        (click)="changeTheme('theme-green')">
+                        <div class="green"></div>
+                        <span>Green</span>
+                    </li>
+                    <li data-theme="orange" [ngClass]="{'active':themeClass == 'theme-orange'}"
+                        (click)="changeTheme('theme-orange')">
+                        <div class="orange"></div>
+                        <span>Orange</span>
+                    </li>
+                    <li data-theme="blush" [ngClass]="{'active':themeClass == 'theme-blush'}"
+                        (click)="changeTheme('theme-blush')">
+                        <div class="blush"></div>
+                        <span>Blush</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
